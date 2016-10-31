@@ -1,14 +1,14 @@
 \documentclass[11pt]{article}
 
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
 \usepackage[margin=.8in,top=1.1in,bottom=1.1in]{geometry} % page layout
 \usepackage{amsmath,amsthm,amssymb,amsfonts} % math things
 \usepackage{graphicx} % include graphics
 \usepackage{fancyhdr} % header customization
 \usepackage{titlesec} % help with section naming
 \usepackage{csquotes}
-
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
 
 % headers
 \pagestyle{fancy} 
@@ -61,7 +61,7 @@
 \section{Auto-vectorization}
 
 \subsubsection*{Which kinds of loops can be vectorized automatically?}
-Innermost loops.
+Dependency free innermost loops with unit stride and supported SIMD operations.
 
 \subsubsection*{Which datatypes and operations are allowed in order to enable auto-vectorization of loops?}
 
@@ -94,13 +94,28 @@ Use structure of arrays (SoA) instead of array of structures (AoS).
 
 obstacles:
 Non-contiguous memory access: non-unit stride or indirect addressing
-Data dependencies (read-after-write)
+Data dependencies (read-after-write not ok, write-after-read in simple situations ok, Read-after-read ok, Write-after-write in general not ok). ausnahme reductions, u.b. multiply-accumulate (MAC) operationen werden erkannt
 
 
 \subsubsection*{Is there a way to assist the compiler through language extensions? If yes, please give details.}
-In some cases, certain keywords or directives may be applied in the code for auto-vectorization to occur.
+In some cases, certain keywords or directives may be applied in the code in order to assist the auto-vectorization's dependency analysis. In the following distinguish proven and potential data dependencies. For proven data dependencies it is known at compile time for sure that there is a dependency which prohibits vectorization. A potential data dependency can only be detected at runtime, e.g. overlapping memory regions. Apart from the following macros and keywords, in order to deal with potential data dependencies the compiler might generate code to detect them at runtime and execute either the safe serial loop or a vectorized version.
+\begin{itemize}
+\item Pragmas just before the respective loop:
+\begin{itemize}
+\item \texttt{\#pragma novector}: Disables vectorization. Saves the code overhead for the runtime dependency check and vectorized loop version. Makes sense if there is no expected benefit from vectorization (e.g. small number of loop iterations) or it is known for sure that input and output memory regions will overlap.
+\item \texttt{\#pragma ivdep}: Conversely, this ignores any potential data dependencies. Proven dependencies are not ignored. Saves the code overhead for the runtime dependency check and non-vectorized loop version. Potentially unsafe. Equivalent to the \texttt{restrict} keyword below.
+\item \texttt{\#pragma loop count (n)}: Tells the compiler the typical number of loop iterations. Helps it to decide if vectorization would be beneficial.
+\item \texttt{\#pragma vector always}: Vectorize even if the compiler thinks it is not beneficial. Does not ignore proven or potential data dependencies.
+\item \texttt{\#pragma vector align}: Only for SSE instructions: Tells the compiler that the data in the loop is 16-bytes memory aligned. This allows for more efficient aligned data movement instructions to be used. Wrong usage results in SSE runtime exceptions.
+\item \texttt{\#pragma vector nontemporal}: Tells the compiler that it should not consider temporal locality for the data. Allows to use more efficient store operations, bypassing the cache. Such a situation occurs for example when adding two vectors.
+\end{itemize}
+\item Keywords:
+\begin{itemize}
+\item \texttt{restrict}: Tells the compiler that it is safe to assume that the annotated pointer (or array) is not aliased, i.e. this pointer is the only reference to the pointed memory and memory does not overlap. Potentially unsafe. Equivalent to the \texttt{ivdep} pragma above.
+\end{itemize}
+\end{itemize}
 
-restrict (aber eigentlich keine lang extension)
+Besides this, there exist compiler command line options that allow the compiler to globally collect information to improve its dependency analysis and trip count estimations.
 
 \subsubsection*{Which loop optimizations are performed by the compiler in order to vectorize and pipeline loops?}
 Loop unrolling.
