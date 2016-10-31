@@ -12,3 +12,8 @@ vec report: icc -qopt-report=1 -qopt-report-phase=vec Multiply.c
 High-level optimizations (HLO): Enable HLO with option O3. HLO report generieren mit -qopt-report-phase=loop
 
 Interprocedural optimization (IPO): -qipo
+
+Combine the -qparallel and -qx options to instruct the Intel ® C++ Compiler to attempt both Auto-
+Parallelization and automatic loop vectorization in the same compilation.
+
+-m : architektur?
