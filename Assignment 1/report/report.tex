@@ -1,0 +1,107 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=.8in,top=1.1in,bottom=1.1in]{geometry} % page layout
+\usepackage{amsmath,amsthm,amssymb,amsfonts} % math things
+\usepackage{graphicx} % include graphics
+\usepackage{fancyhdr} % header customization
+\usepackage{titlesec} % help with section naming
+\usepackage{csquotes}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+% headers
+\pagestyle{fancy} 
+\fancyhf{} % clear all
+\fancyhead[L]{\sffamily\small Lab Course: High Performance Computing --- Assignment Report}
+\fancyhead[R]{\sffamily\small Page \thepage}
+\renewcommand{\headrulewidth}{0.2pt}
+\renewcommand{\footrulewidth}{0.2pt}
+\markright{\hrulefill\quad}
+
+\newcommand{\hwhead}[4]{
+\begin{center}
+\sffamily\large\bfseries Lab Course: High Performance Computing Assignment Report #1
+\vspace{2mm} 
+\normalfont
+
+#2 -- #3 -- \texttt{#4}
+\end{center}
+\vspace{6mm} \hrule \vspace{4mm}
+}
+
+% ------------------------------------------------------------------------------
+% Start here -- Fill in your name, imat and email
+% ------------------------------------------------------------------------------
+
+\newcommand{\name}{Frédéric Gillioz} %
+\newcommand{\imat}{03657002} %
+\newcommand{\email}{frederic.gillioz@tum.de} %
+
+\begin{document}
+
+% ------------------------------------------------------------------------------
+% Change xx (and only xx) to the current sheet number
+% ------------------------------------------------------------------------------
+\hwhead{1}{\name}{\imat}{\email}
+
+% ------------------------------------------------------------------------------
+% Fill in your solutions
+% ------------------------------------------------------------------------------
+
+\setcounter{section}{-1}
+\section{General}
+
+Problems:
+\begin{itemize}
+\item Intel compiler 2017 installation on Ubuntu: Extracted installer package may not be located in a path containing a space character otherwise the installation procedure fails at the licensing step.
+\end{itemize}
+
+\section{Auto-vectorization}
+
+\subsubsection*{Which kinds of loops can be vectorized automatically?}
+Innermost loops.
+
+\subsubsection*{Which datatypes and operations are allowed in order to enable auto-vectorization of loops?}
+
+\subsubsection*{Which types of dependency analysis do the compiler perform?}
+
+pointer aliasing
+dependencies between loop iterations
+
+\subsubsection*{How does programming style influence auto-vectorization?}
+Programming style can inhibit vectorization. For example the existence of global pointers prevents the compiler to prove that there is no aliasing to a memory location which is subject to auto-vectorization. For the same reason one should make use of array notations instead of pointers.
+
+
+
+Within the innermost loop, it is advisable to use straight-line code (no jumping, i.e. no \texttt{switch}, \texttt{goto} or \texttt{return} statements), use arrays as L-values only (constant expressions as R-values are ok) and to have only assignments. Simple \texttt{if} branches are possible if they can be treated as \textit{masked assignments}, i.e. an instruction is applied to the whole SIMD register but the resulting scalars are written back selectively.
+
+Discouraged are calls to any functions (except math library calls), use of non-vectorizable operations and mixing of vectorizable data types.
+
+Also the loop exit condition is not allowed to depend on the own loop's data. It must be invariant within the loop.
+
+Dependencies between loop iterations are not allowed.
+
+Manual loop unrolling and splitting a loop with a large body into multiple smaller loops should be avoided.
+
+Access memory efficiently:
+• Favor inner loops with unit stride.
+• Minimize indirect addressing.
+• Align your data to 16-byte boundaries (for Intel ® SSE instructions).
+
+Use structure of arrays (SoA) instead of array of structures (AoS).
+
+obstacles:
+Non-contiguous memory access: non-unit stride or indirect addressing
+
+
+\subsubsection*{Is there a way to assist the compiler through language extensions? If yes, please give details.}
+In some cases, certain keywords or directives may be applied in the code for auto-vectorization to occur.
+
+restrict (aber eigentlich keine lang extension)
+
+\subsubsection*{Which loop optimizations are performed by the compiler in order to vectorize and pipeline loops?}
+Loop unrolling.
+Loop peeling?
+
+\end{document}
