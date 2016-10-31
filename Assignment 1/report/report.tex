@@ -25,7 +25,9 @@
 \vspace{2mm} 
 \normalfont
 
-#2 -- #3 -- \texttt{#4}
+#2
+
+#3
 \end{center}
 \vspace{6mm} \hrule \vspace{4mm}
 }
@@ -34,16 +36,15 @@
 % Start here -- Fill in your name, imat and email
 % ------------------------------------------------------------------------------
 
-\newcommand{\name}{Frédéric Gillioz} %
-\newcommand{\imat}{03657002} %
-\newcommand{\email}{frederic.gillioz@tum.de} %
+\newcommand{\namea}{Frédéric Gillioz (03657002) \texttt{frederic.gillioz@tum.de}}
+\newcommand{\nameb}{Andreas Amler (????) \texttt{???}}
 
 \begin{document}
 
 % ------------------------------------------------------------------------------
 % Change xx (and only xx) to the current sheet number
 % ------------------------------------------------------------------------------
-\hwhead{1}{\name}{\imat}{\email}
+\hwhead{1}{\namea}{\nameb}
 
 % ------------------------------------------------------------------------------
 % Fill in your solutions
@@ -52,9 +53,9 @@
 \setcounter{section}{-1}
 \section{General}
 
-Problems:
 \begin{itemize}
 \item Intel compiler 2017 installation on Ubuntu: Extracted installer package may not be located in a path containing a space character otherwise the installation procedure fails at the licensing step.
+\item We have set-up a GitHub repository for collaborative working on the deliverables.
 \end{itemize}
 
 \section{Auto-vectorization}
@@ -93,6 +94,7 @@ Use structure of arrays (SoA) instead of array of structures (AoS).
 
 obstacles:
 Non-contiguous memory access: non-unit stride or indirect addressing
+Data dependencies (read-after-write)
 
 
 \subsubsection*{Is there a way to assist the compiler through language extensions? If yes, please give details.}
