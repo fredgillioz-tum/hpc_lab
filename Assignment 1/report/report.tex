@@ -68,48 +68,34 @@ Following conditions must be fulfilled:
 \item No prohibiting data dependencies.
 \item Unit stride: Loop increment by one only.
 \item Supported operations and data types in the loop body.
-\item Countable: The number of iterations must be known and fixed when entering the loop at runtime. The loop must only exit after the last iteration finished, in particular there may not be a data dependent exit point.
-\item Contain straight-line code: The control flow of every iteration must be the same in order to pack them into SIMD instructions. There is one exception to this rule: Simple \texttt{if} statements are allowed, if they can be implemented as masked assignments, i.e. an instruction is applied to the whole SIMD register but the resulting scalars are written back selectively.
-\item No function calls: Except intrinsic math functions and compatible inline functions, i.e. functions that obey the other requirements listed here.
+\item Countable: The number of iterations must be known and fixed when entering the loop at runtime. The loop must only exit after the last iteration finished, in particular there may not be a data dependent exit point (\enquote{single entry and a single exit}).
+\item Contain straight-line code: The control flow of every iteration must be the same in order to pack them into SIMD instructions. This implies no use of \texttt{switch}, \texttt{goto} or \texttt{return} statements within the loop body. There is one exception to this rule: Simple \texttt{if} statements are allowed, if they can be implemented as masked assignments, i.e. an instruction is applied to the whole SIMD register but the resulting scalars are written back selectively.
+\item No function calls: Except intrinsic math functions and compatible functions, i.e. inline functions or functions qualified with \texttt{\_\_attribute\_\_(vector)} (Linux) that obey the other requirements listed here.
 \end{itemize}
 
 \subsubsection*{Which datatypes and operations are allowed in order to enable auto-vectorization of loops?}
 \begin{itemize}
-\item Integers: Most arithmetic and logical operators on 32-bit, 16-bit and 8-bit integer data types are supported. There is limited support for 64-bit integer data types.
-\item Decimals: For 32-bit and 64-bit floating-point numbers, SSE provides SIMD instructions for \texttt{+}, \texttt{-}, \texttt{*}, \texttt{/}, \texttt{min}, \texttt{max} and \texttt{sqrt}. Intrinsic math functions provided through a specialized vector mathematical run-time library add some more allowed operations such as trigonometric functions.
+\item Integers: Most arithmetic and logical operators on 8-, 16- and 32-bit signed and unsigned integer data types are supported: \texttt{+}, \texttt{-}, \texttt{*}, division (however only via run-time library call), \texttt{\&}, \texttt{|}, \texttt{\^}, \texttt{<<}, \texttt{>>}. Many mathematical functions such as \texttt{sqrt}, \texttt{min}, \texttt{max} and \texttt{abs} are also supported. There is limited support for 64-bit integer data types.
+\item Decimals: For 32- and 64-bit floating-point numbers, SSE provides SIMD instructions for \texttt{+}, \texttt{-}, \texttt{*}, \texttt{/}, \texttt{min}, \texttt{max} and \texttt{sqrt}. Intrinsic math functions provided through a specialized vector mathematical run-time library add some more allowed operations such as trigonometric functions.
 \end{itemize}
 
 \subsubsection*{Which types of dependency analysis do the compiler perform?}
-
-pointer aliasing
-dependencies between loop iterations
+\begin{enumerate}
+\item Proven dependencies\\Loop-carried dependencies:
+\begin{itemize}
+\item Read-after-write: A memory location written at iteration \texttt{i} is read at a later iteration \texttt{i+x}. Cannot safely be vectorized.
+\item Write-after-read: A memory location read at iteration \texttt{i} is written at a later iteration \texttt{i+x}. Can safely be vectorized if there is no other use of that memory location in the loop body.
+\item Write-after-write: The same memory location is written in different iterations. This can generally not be safely vectorized.
+\end{itemize}
+There is an exception for some reduction idioms (e.g. multiply-accumulate) that are recognized by the compiler and contain the above dependencies. These can still be safely vectorized.
+\item Potential dependencies\\Pointer aliasing:
+The compiler may check at compile or runtime (by inserting some checker code) for overlapping memory regions caused by pointer aliasing.
+\end{enumerate}
 
 \subsubsection*{How does programming style influence auto-vectorization?}
-Programming style can inhibit vectorization. For example the existence of global pointers prevents the compiler to prove that there is no aliasing to a memory location which is subject to auto-vectorization. For the same reason one should make use of array notations instead of pointers.
+Programming style can inhibit vectorization. For example the existence of global pointers prevents the compiler to prove that there is no aliasing to a memory location which is subject to auto-vectorization. For the same reason one should make use of array notations instead of pointers whenever possible.
 
-
-
-Within the innermost loop, it is advisable to use straight-line code (no jumping, i.e. no \texttt{switch}, \texttt{goto} or \texttt{return} statements), use arrays as L-values only (constant expressions as R-values are ok) and to have only assignments. 
-
-Discouraged are calls to any functions (except math library calls), use of non-vectorizable operations and mixing of vectorizable data types.
-
-Also the loop exit condition is not allowed to depend on the own loop's data. It must be invariant within the loop.
-
-Dependencies between loop iterations are not allowed.
-
-Manual loop unrolling and splitting a loop with a large body into multiple smaller loops should be avoided.
-
-Access memory efficiently:
-• Favor inner loops with unit stride.
-• Minimize indirect addressing.
-• Align your data to 16-byte boundaries (for Intel ® SSE instructions).
-
-Use structure of arrays (SoA) instead of array of structures (AoS).
-
-obstacles:
-Non-contiguous memory access: non-unit stride or indirect addressing
-Data dependencies (read-after-write not ok, write-after-read in simple situations ok, Read-after-read ok, Write-after-write in general not ok). ausnahme reductions, u.b. multiply-accumulate (MAC) operationen werden erkannt
-
+Manual loop optimizations, indirect addressing, misaligned data and array of structures (AoS) should be avoided.
 
 \subsubsection*{Is there a way to assist the compiler through language extensions? If yes, please give details.}
 In some cases, certain keywords or directives may be applied in the code in order to assist the auto-vectorization's dependency analysis. In the following distinguish proven and potential data dependencies. For proven data dependencies it is known at compile time for sure that there is a dependency which prohibits vectorization. A potential data dependency can only be detected at runtime, e.g. overlapping memory regions. Apart from the following macros and keywords, in order to deal with potential data dependencies the compiler might generate code to detect them at runtime and execute either the safe serial loop or a vectorized version.
@@ -122,7 +108,6 @@ In some cases, certain keywords or directives may be applied in the code in orde
 \item \texttt{\#pragma vector always}: Vectorize even if the compiler thinks it is not beneficial. Does not ignore proven or potential data dependencies.
 \item \texttt{\#pragma vector align}: Only for SSE instructions: Tells the compiler that the data in the loop is 16-bytes memory aligned. This allows for more efficient aligned data movement instructions to be used. Wrong usage results in SSE runtime exceptions.
 \item \texttt{\#pragma vector nontemporal}: Tells the compiler that it should not consider temporal locality for the data. Allows to use more efficient store operations, bypassing the cache. Such a situation occurs for example when adding two vectors.
-\item \textcolor{red}{\texttt{\#pragma SIMD}: F. 17?}
 \end{itemize}
 \item Keywords:
 \begin{itemize}
@@ -130,13 +115,19 @@ In some cases, certain keywords or directives may be applied in the code in orde
 \end{itemize}
 \end{itemize}
 
-Besides this, there exist compiler command line options that allow the compiler to globally collect information to improve its dependency analysis and trip count estimations.
+Besides this, there exist compiler command line options that allow the compiler to globally collect information to improve its dependency analysis and trip count estimations (through interprocedural optimization).
+
+The pragma \texttt{SIMD} is not listed here because it is not an auto-vectorization hint but a user-mandated vectorization that supplements auto-vectorization.
 
 \subsubsection*{Which loop optimizations are performed by the compiler in order to vectorize and pipeline loops?}
-Loop unrolling.
-Loop peeling?
+\begin{itemize}
+\item Loop sectioning (Strip-mining): Fragmenting a large loop into smaller segments plus a finalizing cleanup loop. One segment is subsequently processed by a single SIMD instruction. Might also increase the temporal and spatial locality in the data cache.
+\item Loop blocking: Generalizes the idea of loop sectioning for higher dimensions. The primary goal of loop blocking is to optimize the cache usage.
+\item Loop interchanging: Especially for the important use case of matrix-matrix multiplications, the three nested loops can be ordered in a way such that for all inner iterations the memory access happens with unit stride so that more efficient vectorization is possible.
+\item Loop peeling: Data movement is more efficient if data is aligned to a 16-byte boundary (for SSE instructions). If the compiler cannot statically assure that this is the case, then it might generate code that peels off some iterations and performs them non-vectorized.
+\item Loop collapsing: Some nested loops can be collapsed into a single loop.
+\end{itemize}
 
-loop collapsing or interchange,
-loop materialization.
+There are some more loop optimization techniques such as loop unrolling that are not listed here because these aim generally at a higher performance independently of vectorization. However they can occur along vectorization.
 
 \end{document}
