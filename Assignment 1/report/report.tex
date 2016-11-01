@@ -64,19 +64,19 @@
 \subsubsection*{Which kinds of loops can be vectorized automatically?}
 Following conditions must be fulfilled:
 \begin{itemize}
-\item Innermost loops
-\item No prohibiting data dependencies
-\item Unit stride
-\item Supported operations and data types in the loop body
+\item Innermost loops: With the exception of outer loops that were transformed into inner loops due to some previous loop optimizations.
+\item No prohibiting data dependencies.
+\item Unit stride: Loop increment by one only.
+\item Supported operations and data types in the loop body.
 \item Countable: The number of iterations must be known and fixed when entering the loop at runtime. The loop must only exit after the last iteration finished, in particular there may not be a data dependent exit point.
+\item Contain straight-line code: The control flow of every iteration must be the same in order to pack them into SIMD instructions. There is one exception to this rule: Simple \texttt{if} statements are allowed, if they can be implemented as masked assignments, i.e. an instruction is applied to the whole SIMD register but the resulting scalars are written back selectively.
+\item No function calls: Except intrinsic math functions and compatible inline functions, i.e. functions that obey the other requirements listed here.
 \end{itemize}
-
-Dependency free innermost loops with unit stride and supported operations and data types.
 
 \subsubsection*{Which datatypes and operations are allowed in order to enable auto-vectorization of loops?}
 \begin{itemize}
 \item Integers: Most arithmetic and logical operators on 32-bit, 16-bit and 8-bit integer data types are supported. There is limited support for 64-bit integer data types.
-\item Decimals: For 32-bit and 64-bit floating-point numbers, SSE provides SIMD instructions for \texttt{+}, \texttt{-}, \texttt{*}, \texttt{/}, \texttt{min}, \texttt{max} and \texttt{sqrt}. When using a specialized vector mathematical run-time library some more operations are allowed such as trigonometric functions.
+\item Decimals: For 32-bit and 64-bit floating-point numbers, SSE provides SIMD instructions for \texttt{+}, \texttt{-}, \texttt{*}, \texttt{/}, \texttt{min}, \texttt{max} and \texttt{sqrt}. Intrinsic math functions provided through a specialized vector mathematical run-time library add some more allowed operations such as trigonometric functions.
 \end{itemize}
 
 \subsubsection*{Which types of dependency analysis do the compiler perform?}
@@ -89,7 +89,7 @@ Programming style can inhibit vectorization. For example the existence of global
 
 
 
-Within the innermost loop, it is advisable to use straight-line code (no jumping, i.e. no \texttt{switch}, \texttt{goto} or \texttt{return} statements), use arrays as L-values only (constant expressions as R-values are ok) and to have only assignments. Simple \texttt{if} branches are possible if they can be treated as \textit{masked assignments}, i.e. an instruction is applied to the whole SIMD register but the resulting scalars are written back selectively.
+Within the innermost loop, it is advisable to use straight-line code (no jumping, i.e. no \texttt{switch}, \texttt{goto} or \texttt{return} statements), use arrays as L-values only (constant expressions as R-values are ok) and to have only assignments. 
 
 Discouraged are calls to any functions (except math library calls), use of non-vectorizable operations and mixing of vectorizable data types.
 
@@ -135,5 +135,8 @@ Besides this, there exist compiler command line options that allow the compiler 
 \subsubsection*{Which loop optimizations are performed by the compiler in order to vectorize and pipeline loops?}
 Loop unrolling.
 Loop peeling?
+
+loop collapsing or interchange,
+loop materialization.
 
 \end{document}
