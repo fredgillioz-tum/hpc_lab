@@ -154,17 +154,17 @@ There are some more loop optimization techniques such as loop unrolling that are
 
 \section{Dependency checks and vectorization}
 
-The file \texttt{vector.c} was compiled with high-level optimizations (option \texttt{-O3}), which performs some additional loop transformations that assist the auto-vectorizer. In addition interprocedural optimization (\texttt{-ipo}) was used in order to provide the compiler with additional information about trip counts, data alignment and data dependencies. The used command line is:\\
-\texttt{icc -restrict -O3 -ipo -ip-no-inlining -qopt-report=5 -qopt-report-phase=vec vector.c}
+The file \texttt{vector.c} was compiled with high-level optimizations (option \texttt{-O3}), which performs some additional loop transformations that assist the auto-vectorizer. In addition interprocedural optimization (\texttt{-ipo}) was used in order to provide the compiler with additional information about trip counts, data alignment and data dependencies. The used command line was:\\
+\texttt{icc -restrict -O3 -ipo -ip-no-inlining -qopt-report=3 -qopt-report-phase=vec vector.c}\\
+In the following if, due to loop transformations, there is a remainder loop that could not be vectorized but the main loop could, then the whole loop is considered vectorizable. Also for most examples there is unaligned access to data that causes slow down because of multiple data movement instructions. This is not mentioned explicitly below.
+
 \lstset{style=optrpt}
 \begin{enumerate}
 \item \texttt{bsp1\_}\\
-Vectorizable: Partially\\
+Vectorizable: Yes.\\
 Reason:
 \begin{itemize}
-\item There a remainder loop that is not vectorized.
 \item A masked assignment is present (requires multiple computation and store instructions per SIMD iteration).
-\item There is unaligned data (causes inefficient data movement).
 \end{itemize}
 Compiler report:
 \begin{lstlisting}
@@ -198,12 +198,10 @@ LOOP END
 \end{lstlisting}
 
 \item \texttt{bsp2\_}\\
-Vectorizable: Partially\\
+Vectorizable: Yes.\\
 Reason:
 \begin{itemize}
-\item There a remainder loop that is not vectorized.
 \item The use of \texttt{goto} is allowed here because it forms a loop structure. This is still considered straight-line code.
-\item There is unaligned data (causes inefficient data movement).
 \end{itemize}
 Compiler report:
 \begin{lstlisting}
@@ -234,6 +232,304 @@ LOOP END
 
 LOOP BEGIN at vector.c(255,3)
 <Remainder loop for vectorization>
+LOOP END
+\end{lstlisting}
+
+\item \texttt{bsp3\_}\\
+Vectorizable: Yes.\\
+Reason:
+\begin{itemize}
+\item There is a write-after-read dependency that does not prohibit vectorization.
+\end{itemize}
+Compiler report:
+\begin{lstlisting}
+LOOP BEGIN at vector.c(273,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at vector.c(273,3)
+   <Peeled loop for vectorization, Multiversioned v2>
+   LOOP END
+
+   LOOP BEGIN at vector.c(273,3)
+   <Multiversioned v2>
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15450: unmasked unaligned unit stride loads: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 5 
+      remark #15477: vector cost: 2.000 
+      remark #15478: estimated potential speedup: 2.310 
+      remark #15488: --- end vector cost summary ---
+   LOOP END
+
+   LOOP BEGIN at vector.c(273,3)
+   <Remainder loop for vectorization, Multiversioned v2>
+   LOOP END
+LOOP END
+\end{lstlisting}
+
+\item \texttt{bsp4\_}\\
+Vectorizable: Yes.\\
+Reason:
+\begin{itemize}
+\item There is a read-after-write dependency. In general this prohibits vectorization, however in this case the offset (100) is large enough to work safely.
+\end{itemize}
+Compiler report:
+\begin{lstlisting}
+LOOP BEGIN at vector.c(285,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at vector.c(285,3)
+   <Peeled loop for vectorization, Multiversioned v2>
+   LOOP END
+
+   LOOP BEGIN at vector.c(285,3)
+   <Multiversioned v2>
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15448: unmasked aligned unit stride loads: 1 
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 5 
+      remark #15477: vector cost: 1.500 
+      remark #15478: estimated potential speedup: 2.990 
+      remark #15488: --- end vector cost summary ---
+   LOOP END
+
+   LOOP BEGIN at vector.c(285,3)
+   <Remainder loop for vectorization, Multiversioned v2>
+   LOOP END
+LOOP END
+\end{lstlisting}
+
+\item \texttt{bsp5\_}\\
+Vectorizable: Depends. In this case it is vectorizable.\\
+Reason:
+\begin{itemize}
+\item In this case it is vectorizable because the compiler analyses the invocation context and finds out that there is no prohibiting dependency due to the specific values of \texttt{l} and \texttt{m}.
+\item If the specific values of \texttt{l} and \texttt{m} are unknown, the compiler will generate multiple versions of the loop and checker code that selects the appropriate version to run at runtime.
+\item There is a remainder loop that could have been vectorized but has not been because the compiler found it to be inefficient.
+\end{itemize}
+Compiler report:
+\begin{lstlisting}
+LOOP BEGIN at vector.c(296,3)
+<Peeled loop for vectorization>
+LOOP END
+
+LOOP BEGIN at vector.c(296,3)
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 8 
+   remark #15477: vector cost: 3.000 
+   remark #15478: estimated potential speedup: 2.390 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(296,3)
+<Alternate Alignment Vectorized Loop>
+LOOP END
+
+LOOP BEGIN at vector.c(296,3)
+<Remainder loop for vectorization>
+   remark #15335: remainder loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+LOOP END
+\end{lstlisting}
+
+\item \texttt{bsp6\_}\\
+Vectorizable: Yes.\\
+Reason:
+\begin{itemize}
+\item There is a read-after-write dependency in \texttt{y}. In general this prohibits vectorization, however in this case the loop could be split in two chunk such that it can work safely.
+\end{itemize}
+Compiler report:
+\begin{lstlisting}
+LOOP BEGIN at vector.c(307,3)
+<Peeled loop for vectorization, Distributed chunk1>
+LOOP END
+
+LOOP BEGIN at vector.c(307,3)
+<Distributed chunk1>
+   remark #15301: PARTIAL LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 5 
+   remark #15477: vector cost: 1.500 
+   remark #15478: estimated potential speedup: 2.980 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(307,3)
+<Alternate Alignment Vectorized Loop, Distributed chunk1>
+LOOP END
+
+LOOP BEGIN at vector.c(307,3)
+<Remainder loop for vectorization, Distributed chunk1>
+LOOP END
+
+LOOP BEGIN at vector.c(307,3)
+<Peeled loop for vectorization, Distributed chunk2>
+LOOP END
+
+LOOP BEGIN at vector.c(307,3)
+<Distributed chunk2>
+   remark #15301: PARTIAL LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 5 
+   remark #15477: vector cost: 1.500 
+   remark #15478: estimated potential speedup: 2.980 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(307,3)
+<Alternate Alignment Vectorized Loop, Distributed chunk2>
+LOOP END
+
+LOOP BEGIN at vector.c(307,3)
+<Remainder loop for vectorization, Distributed chunk2>
+LOOP END
+\end{lstlisting}
+
+\item \texttt{bsp7\_}\\
+Vectorizable: Yes.\\
+Reason:
+\begin{itemize}
+\item There is indirect addressing, that normally prohibits vectorization. In this case however the respective code line has no effect and was likely removed by the compiler. The remaining loop body can be vectorized.
+\end{itemize}
+Compiler report:
+\begin{lstlisting}
+LOOP BEGIN at vector.c(319,3)
+<Peeled loop for vectorization>
+LOOP END
+
+LOOP BEGIN at vector.c(319,3)
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 8 
+   remark #15477: vector cost: 3.500 
+   remark #15478: estimated potential speedup: 2.070 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(319,3)
+<Alternate Alignment Vectorized Loop>
+LOOP END
+
+LOOP BEGIN at vector.c(319,3)
+<Remainder loop for vectorization>
+LOOP END
+\end{lstlisting}
+
+\item \texttt{bsp8\_}\\
+Vectorizable: No.\\
+Reason:
+\begin{itemize}
+\item There is a non-unit stride access to \texttt{x} and \texttt{z} in the first line of the loop body that prohibits vectorization.
+\item There is indirect addressing in the second line of the loop body that prohibits vectorization.
+\item Still the compiler managed to vectorize this through emulation of non-unit strided and irregularly indexed loads (found using \texttt{-qopt-report=5}).
+\item There is a remainder loop that could have been vectorized but has not been because the compiler found it to be inefficient.
+\end{itemize}
+Compiler report:
+\begin{lstlisting}
+LOOP BEGIN at vector.c(332,3)
+<Peeled loop for vectorization, Multiversioned v1>
+LOOP END
+
+LOOP BEGIN at vector.c(332,3)
+<Multiversioned v1>
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15449: unmasked aligned unit stride stores: 2 
+   remark #15450: unmasked unaligned unit stride loads: 3 
+   remark #15452: unmasked strided loads: 2 
+   remark #15462: unmasked indexed (or gather) loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 21 
+   remark #15477: vector cost: 14.000 
+   remark #15478: estimated potential speedup: 1.440 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(332,3)
+<Alternate Alignment Vectorized Loop, Multiversioned v1>
+LOOP END
+
+LOOP BEGIN at vector.c(332,3)
+<Remainder loop for vectorization, Multiversioned v1>
+   remark #15335: remainder loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+LOOP END
+
+LOOP BEGIN at vector.c(332,3)
+<Peeled loop for vectorization, Multiversioned v2>
+LOOP END
+
+LOOP BEGIN at vector.c(332,3)
+<Multiversioned v2>
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15449: unmasked aligned unit stride stores: 2 
+   remark #15450: unmasked unaligned unit stride loads: 3 
+   remark #15452: unmasked strided loads: 2 
+   remark #15462: unmasked indexed (or gather) loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 21 
+   remark #15477: vector cost: 14.000 
+   remark #15478: estimated potential speedup: 1.440 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(332,3)
+<Alternate Alignment Vectorized Loop, Multiversioned v2>
+LOOP END
+
+LOOP BEGIN at vector.c(332,3)
+<Remainder loop for vectorization, Multiversioned v2>
+LOOP END
+\end{lstlisting}
+
+\item \texttt{bsp9\_}\\
+Vectorizable: No.\\
+Reason:
+\begin{itemize}
+\item There is indirect addressing in all lines of the loop body that prohibits vectorization.
+\item There are potential read-after-write and write-after-read dependencies due to the indirect addressing in the first and third line of the loop body.
+\end{itemize}
+Compiler report:
+\begin{lstlisting}
+LOOP BEGIN at vector.c(345,3)
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization. First dependence is shown below. Use level 5 report for details
+   remark #15346: vector dependence: assumed ANTI dependence between y[*(iy+i*4)] (346:5) and y[*(ix+i*4)] (348:5)
+LOOP END
+\end{lstlisting}
+
+\item \texttt{bsp10\_}\\
+Vectorizable: Yes.\\
+Reason:
+\begin{itemize}
+\item The invocation of \texttt{f\_()} can be inlined (didn't happen because it was disabled per compiler option). \texttt{f\_()} uses only allowed operations and math function calls. The \texttt{sin()} call will be linked by the compiler to a SIMD version.
+\item However the compiler decided not to vectorize because it seemed inefficient.
+\end{itemize}
+Compiler report:
+\begin{lstlisting}
+LOOP BEGIN at vector.c(358,3)
+   remark #15335: loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 107 
+   remark #15477: vector cost: 114.000 
+   remark #15478: estimated potential speedup: 0.940 
+   remark #15485: serialized function calls: 1
+   remark #15488: --- end vector cost summary ---
+   remark #15489: --- begin vector function matching report ---
+   remark #15490: Function call: f_(double) with simdlen=2, actual parameter types: (vector)   [ vector.c(359,12) ]
+   remark #15545: SIMD annotation was not seen, consider adding 'declare simd' directives at function declaration 
+   remark #15493: --- end vector function matching report ---
 LOOP END
 \end{lstlisting}
 \end{enumerate}
