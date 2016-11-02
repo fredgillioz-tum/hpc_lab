@@ -9,7 +9,27 @@
 \usepackage{fancyhdr} % header customization
 \usepackage{titlesec} % help with section naming
 \usepackage{csquotes}
-\usepackage{color}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\lstdefinestyle{optrpt}{
+    backgroundcolor=\color{white},   
+    commentstyle=\color{black},
+    keywordstyle=\color{black},
+    numberstyle=\tiny\color{darkgray},
+    stringstyle=\color{black},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
 
 % headers
 \pagestyle{fancy} 
@@ -55,6 +75,8 @@
 \section{General}
 
 \begin{itemize}
+\item All results in this report were produced on a Linux system. Therefore some aspects mentioned in this report, like compiler option syntax, are Linux specific.
+\item The Intel C/C++ compiler version 17 was used.
 \item Intel compiler 2017 installation on Ubuntu: Extracted installer package may not be located in a path containing a space character otherwise the installation procedure fails at the licensing step.
 \item We have set-up a GitHub repository for collaborative working on the deliverables.
 \end{itemize}
@@ -131,6 +153,91 @@ The pragma \texttt{SIMD} is not listed here because it is not an auto-vectorizat
 There are some more loop optimization techniques such as loop unrolling that are not listed here because these aim generally at a higher performance independently of vectorization. However they can occur along vectorization.
 
 \section{Dependency checks and vectorization}
+
+The file \texttt{vector.c} was compiled with high-level optimizations (option \texttt{-O3}), which performs some additional loop transformations that assist the auto-vectorizer. In addition interprocedural optimization (\texttt{-ipo}) was used in order to provide the compiler with additional information about trip counts, data alignment and data dependencies. The used command line is:\\
+\texttt{icc -restrict -O3 -ipo -ip-no-inlining -qopt-report=5 -qopt-report-phase=vec vector.c}
+\lstset{style=optrpt}
+\begin{enumerate}
+\item \texttt{bsp1\_}\\
+Vectorizable: Partially\\
+Reason:
+\begin{itemize}
+\item There a remainder loop that is not vectorized.
+\item A masked assignment is present (requires multiple computation and store instructions per SIMD iteration).
+\item There is unaligned data (causes inefficient data movement).
+\end{itemize}
+Compiler report:
+\begin{lstlisting}
+LOOP BEGIN at vector.c(239,3)
+<Peeled loop for vectorization>
+LOOP END
+
+LOOP BEGIN at vector.c(239,3)
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 2 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 30 
+   remark #15477: vector cost: 10.000 
+   remark #15478: estimated potential speedup: 2.730 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(239,3)
+<Alternate Alignment Vectorized Loop>
+LOOP END
+
+LOOP BEGIN at vector.c(239,3)
+<Remainder loop for vectorization>
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at vector.c(239,3)
+<Remainder loop for vectorization>
+LOOP END
+\end{lstlisting}
+
+\item \texttt{bsp2\_}\\
+Vectorizable: Partially\\
+Reason:
+\begin{itemize}
+\item There a remainder loop that is not vectorized.
+\item The use of \texttt{goto} is allowed here because it forms a loop structure. This is still considered straight-line code.
+\item There is unaligned data (causes inefficient data movement).
+\end{itemize}
+Compiler report:
+\begin{lstlisting}
+LOOP BEGIN at vector.c(255,3)
+<Peeled loop for vectorization>
+LOOP END
+
+LOOP BEGIN at vector.c(255,3)
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 16 
+   remark #15477: vector cost: 7.500 
+   remark #15478: estimated potential speedup: 1.990 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(255,3)
+<Alternate Alignment Vectorized Loop>
+LOOP END
+
+LOOP BEGIN at vector.c(255,3)
+<Remainder loop for vectorization>
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+
+LOOP BEGIN at vector.c(255,3)
+<Remainder loop for vectorization>
+LOOP END
+\end{lstlisting}
+\end{enumerate}
+
 \section{Vectorization across equal-shaped problems/sub-tasks}
 \section{Matrix-Matrix-Multiplication I}
 

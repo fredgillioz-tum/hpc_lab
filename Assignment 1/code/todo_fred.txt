@@ -3,11 +3,9 @@ To enable or disable dynamic data alignment optimizations, specify the option Qo
 
 __declspec(align)
 
-#pragma vector always : auch vektorisieren, wenn compiler glaubt das es ineffizient ist. auf jeden fall sicher.
-
 vectorization ab -O2 aktiv; ausschalten: -no-vec
 
-vec report: icc -qopt-report=1 -qopt-report-phase=vec Multiply.c
+vec report: icc -qopt-report=5 -qopt-report-phase=vec Multiply.c
 
 High-level optimizations (HLO): Enable HLO with option O3. HLO report generieren mit -qopt-report-phase=loop
 
