@@ -4,3 +4,7 @@
 *.synctex.gz
 *.pdf
 *.tar.gz
+*.nav
+*.out
+*.snm
+*.toc

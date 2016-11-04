@@ -1,0 +1,73 @@
+\documentclass[11pt]{beamer}
+\usetheme{Singapore}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman,english]{babel}
+\usepackage{csquotes}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\author{Frédéric Gillioz\\{\small \texttt{frederic.gillioz@tum.de}}\\\vspace{10pt}Andreas Amler\\{\small \texttt{????}}}
+\title{Assignment 1: Vectorization\\{\footnotesize Lab Course: High Performance Computing}}
+%\setbeamercovered{transparent}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{\scriptsize{\hfill\insertframenumber\hspace*{10pt}}\vskip10pt}
+%\logo{\includegraphics[height=0.7cm]{tum_logo}}
+\institute{Faculty for Informatics\\Technical University of Munich}
+\date{2016-11-07}
+\subject{Vectorization} % PDF document info
+\begin{document}
+
+{
+\setbeamertemplate{footline}{}
+\setbeamertemplate{headline}{}
+\addtoheadtemplate{\pgfuseshading{beamer@headfade}}{}
+\begin{frame}
+\titlepage
+\end{frame}
+}
+\addtocounter{framenumber}{-1}
+
+%{
+%\setbeamertemplate{headline}{}
+%\addtoheadtemplate{\pgfuseshading{beamer@headfade}}{}
+%\begin{frame}{Outline}
+%\tableofcontents
+%\end{frame}
+%}
+
+\input{ex1}
+
+\input{ex2}
+
+\input{ex3}
+
+\input{ex4}
+
+\input{conclusion}
+
+%{
+%\setbeamertemplate{headline}{}
+%\addtoheadtemplate{\pgfuseshading{beamer@headfade}}{}
+%\begin{frame}{References}
+%\setbeamertemplate{bibliography item}[book]{}
+%\input{main.bbl.tex}
+%%\bibliographystyle{alpha}
+%%\bibliography{references}
+%\end{frame}
+%}
+
+{
+\setbeamertemplate{headline}{}
+\addtoheadtemplate{\pgfuseshading{beamer@headfade}}{}
+\begin{frame}{Thank you.}
+\begin{center}
+\begin{Huge}
+Q\&A
+\end{Huge}
+\end{center}
+\end{frame}
+}
+
+\end{document}
