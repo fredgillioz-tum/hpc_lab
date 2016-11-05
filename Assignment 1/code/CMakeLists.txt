@@ -7,8 +7,8 @@ cmake_minimum_required(VERSION 3.6)
 
 project(assignment1)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -restrict")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -restrict")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -restrict -O3 -ipo -ip-no-inlining -qopt-report=5 -qopt-report-phase=vec")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -restrict -O3 -ipo -ip-no-inlining -qopt-report=5 -qopt-report-phase=vec")
 
 set(SOURCE_FILES
     dgemm.c

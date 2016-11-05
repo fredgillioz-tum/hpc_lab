@@ -1,15 +1,19 @@
-To enable or disable dynamic data alignment optimizations, specify the option Qopt-dynamic-align[-]
-(Windows) or [no-]qopt-dynamic-align[-] (Linux).
+Alignment:
+* __declspec(align(16)) : Variablendeklaration
+* __assume_aligned(x, 16) : Deklaration Funktionsparameter (wenn kein IPO)
 
-__declspec(align)
+Optimization options:
+* -O2 : Aktiviert Vektorisierung. Ausschalten mit -no-vec
+* -O3 : High-level optimizations (HLO): Erweiterte Schleifentransformationen
+* -qipo, -qip : Interprocedural optimization (IPO): Sammelt global Daten (innerhalb aller
+  Dateien bzw. nur in aktueller Datei) für bessere Abschätzung von trip counts, data alignment,
+  oder data dependencies.
+* -[no-]qopt-dynamic-align : dynamic data alignment optimizations an/aus
 
-vectorization ab -O2 aktiv; ausschalten: -no-vec
+Reporting:
+* -qopt-report=[0..5] : Reporting level. 0=aus, 5=meiste info
+* -qopt-report-phase=[vec,loop] : vec=Vektorisierung, loop=HLO
 
-vec report: icc -qopt-report=5 -qopt-report-phase=vec Multiply.c
-
-High-level optimizations (HLO): Enable HLO with option O3. HLO report generieren mit -qopt-report-phase=loop
-
-Interprocedural optimization (IPO): -qipo
 
 Combine the -qparallel and -qx options to instruct the Intel ® C++ Compiler to attempt both Auto-
 Parallelization and automatic loop vectorization in the same compilation.

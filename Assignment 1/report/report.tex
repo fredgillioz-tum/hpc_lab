@@ -306,8 +306,7 @@ Vectorizable: Depends. In this case it is vectorizable.\\
 Reason:
 \begin{itemize}
 \item In this case it is vectorizable because the compiler analyses the invocation context and finds out that there is no prohibiting dependency due to the specific values of \texttt{l} and \texttt{m}.
-\item If the specific values of \texttt{l} and \texttt{m} are unknown, the compiler will generate multiple versions of the loop and checker code that selects the appropriate version to run at runtime.
-\item There is a remainder loop that could have been vectorized but has not been because the compiler found it to be inefficient.
+\item If the specific values of \texttt{l} and \texttt{m} are unknown, the compiler will generate multiple versions of the loop (serial and vectorized) and checker code that selects the appropriate version to run at runtime.
 \end{itemize}
 Compiler report:
 \begin{lstlisting}
@@ -341,7 +340,7 @@ LOOP END
 Vectorizable: Yes.\\
 Reason:
 \begin{itemize}
-\item There is a read-after-write dependency in \texttt{y}. In general this prohibits vectorization, however in this case the loop could be split in two chunks such that it can work safely.
+\item There is a read-after-write dependency in \texttt{y}. In general this prohibits vectorization, however in this case the loop could be split in two chunks such that it can work safely. The first chunk executes the second line of the original loop body (writing \texttt{y}) and the second chunk executes the first line of the original loop body (reading \texttt{y}).
 \end{itemize}
 Compiler report:
 \begin{lstlisting}
@@ -431,10 +430,9 @@ LOOP END
 Vectorizable: No.\\
 Reason:
 \begin{itemize}
-\item There is a non-unit strided access to \texttt{x} and \texttt{z} in the first line of the loop body that prohibits vectorization.
+\item There is a non-unit strided access to \texttt{x} and \texttt{z} in the first line of the loop body and to \texttt{y} in the second line of the loop body that prohibits vectorization.
 \item There is indirect addressing in the second line of the loop body that prohibits vectorization.
 \item Still the compiler managed to vectorize this through emulation of non-unit strided and irregularly indexed loads (found using \texttt{-qopt-report=5}).
-\item There is a remainder loop that could have been vectorized but has not been because the compiler found it to be inefficient.
 \end{itemize}
 Compiler report:
 \begin{lstlisting}
@@ -653,7 +651,7 @@ Reason:
 \begin{itemize}
 \item Both inner loops could have been fused into a single inner loop. However according to the compiler output that did not happen.
 \item There are no prohibiting dependencies.
-\item There are remainder loops that could have been vectorized but have not been because the compiler found it to be inefficient.
+\item Manually loop fusing revealed a worse (mean) estimated potential speedup. Thus the compiler probably decided not to fuse the loops.
 \end{itemize}
 Compiler report:
 \begin{lstlisting}
@@ -755,7 +753,6 @@ Reason:
 \begin{itemize}
 \item The first line can be vectorized but there is indirect addressing in the second line of the loop body that prohibits vectorization.
 \item However the compiler can split the loop body into a vectorized loop for the first line and a separate loop for the second line. Even the second loop could be vectorized to some extent by the compiler using emulation of irregularly indexed stores (found using \texttt{-qopt-report=5}). However the estimated speedup for the second loop is rather poor.
-\item There is a remainder loop that could have been vectorized but has not been because the compiler found it to be inefficient.
 \end{itemize}
 Compiler report:
 \begin{lstlisting}
@@ -861,6 +858,12 @@ LOOP BEGIN at vector.c(517,3)
 LOOP END
 \end{lstlisting}
 \end{enumerate}
+
+The code was improved in following ways:
+\begin{itemize}
+\item Arrays have been declared with \texttt{\_\_declspec(align(16))} in \texttt{main()}. For most of the loops this increases runtime performance and reduces code size where the compiler inserted dynamic alignment optimizations (using loop peeling). The improved runtime performance is due to the strict use of aligned memory movements. In case interprocedural optimizations were disabled there would be the necessity to also change the declaration of function arguments using \texttt{\_\_assume\_aligned(x, 16)}.
+\item Declaring \texttt{f\_()} as \texttt{inline} facilitates vectorization of \texttt{bsp10\_}.
+\end{itemize}
 
 \section{Vectorization across equal-shaped problems/sub-tasks}
 \section{Matrix-Matrix-Multiplication I}

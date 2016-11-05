@@ -1,0 +1,1178 @@
+Intel(R) Advisor can now assist with vectorization and show optimization
+  report messages with your source code.
+See "https://software.intel.com/en-us/intel-advisor-xe" for details.
+
+Intel(R) C Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 17.0.0.098 Build 20160721
+
+Compiler options: -restrict -O3 -ipo -ip-no-inlining -qopt-report=5 -qopt-report-phase=vec
+
+Begin optimization report for: main()
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(67,3)
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(68,5) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(69,5) ]
+   remark #15388: vectorization support: reference z[i] has aligned access   [ vector.c(70,5) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15449: unmasked aligned unit stride stores: 3 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 11 
+   remark #15477: vector cost: 4.500 
+   remark #15478: estimated potential speedup: 2.440 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(73,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at vector.c(79,5)
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(80,7) ]
+      remark #15388: vectorization support: reference b[i][j] has aligned access   [ vector.c(81,7) ]
+      remark #15388: vectorization support: reference c[i][j] has aligned access   [ vector.c(82,7) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15399: vectorization support: unroll factor set to 4
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15449: unmasked aligned unit stride stores: 3 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 11 
+      remark #15477: vector cost: 4.500 
+      remark #15478: estimated potential speedup: 2.310 
+      remark #15488: --- end vector cost summary ---
+   LOOP END
+
+   LOOP BEGIN at vector.c(79,5)
+   <Remainder loop for vectorization>
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(80,7) ]
+      remark #15388: vectorization support: reference b[i][j] has aligned access   [ vector.c(81,7) ]
+      remark #15388: vectorization support: reference c[i][j] has aligned access   [ vector.c(82,7) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15309: vectorization support: normalized vectorization overhead 0.667
+      remark #15301: REMAINDER LOOP WAS VECTORIZED
+   LOOP END
+LOOP END
+
+LOOP BEGIN at vector.c(78,3)
+LOOP END
+
+LOOP BEGIN at vector.c(92,3)
+   remark #15388: vectorization support: reference e[i] has aligned access   [ vector.c(93,15) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 8
+   remark #15309: vectorization support: normalized vectorization overhead 0.475
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 6 
+   remark #15477: vector cost: 2.500 
+   remark #15478: estimated potential speedup: 2.120 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(92,3)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at vector.c(96,3)
+   remark #15388: vectorization support: reference e[i] has aligned access   [ vector.c(97,15) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 8
+   remark #15309: vectorization support: normalized vectorization overhead 0.475
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 6 
+   remark #15477: vector cost: 2.500 
+   remark #15478: estimated potential speedup: 2.120 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(96,3)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at vector.c(100,3)
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(101,15) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 8
+   remark #15309: vectorization support: normalized vectorization overhead 0.475
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 6 
+   remark #15477: vector cost: 2.500 
+   remark #15478: estimated potential speedup: 2.120 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(100,3)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at vector.c(104,3)
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(105,15) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 8
+   remark #15309: vectorization support: normalized vectorization overhead 0.475
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 6 
+   remark #15477: vector cost: 2.500 
+   remark #15478: estimated potential speedup: 2.190 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(104,3)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at vector.c(113,3)
+   remark #15388: vectorization support: reference z[i] has aligned access   [ vector.c(114,15) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 8
+   remark #15309: vectorization support: normalized vectorization overhead 0.475
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 6 
+   remark #15477: vector cost: 2.500 
+   remark #15478: estimated potential speedup: 2.120 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(113,3)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at vector.c(117,3)
+   remark #15388: vectorization support: reference z[i] has aligned access   [ vector.c(118,5) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 4 
+   remark #15477: vector cost: 1.500 
+   remark #15478: estimated potential speedup: 2.660 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(121,3)
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(122,15) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(122,22) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.679
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 2 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 8 
+   remark #15477: vector cost: 3.500 
+   remark #15478: estimated potential speedup: 2.060 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(121,3)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at vector.c(125,3)
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(126,5) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(127,5) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15449: unmasked aligned unit stride stores: 2 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 7 
+   remark #15477: vector cost: 3.000 
+   remark #15478: estimated potential speedup: 2.330 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(130,3)
+   remark #15388: vectorization support: reference e[i] has aligned access   [ vector.c(131,15) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 8
+   remark #15309: vectorization support: normalized vectorization overhead 0.475
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 6 
+   remark #15477: vector cost: 2.500 
+   remark #15478: estimated potential speedup: 2.120 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(130,3)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at vector.c(134,3)
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(135,15) ]
+   remark #15388: vectorization support: reference e[i] has aligned access   [ vector.c(135,22) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.679
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 2 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 8 
+   remark #15477: vector cost: 3.500 
+   remark #15478: estimated potential speedup: 2.060 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(134,3)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at vector.c(138,3)
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(139,5) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 4 
+   remark #15477: vector cost: 1.500 
+   remark #15478: estimated potential speedup: 2.660 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(142,3)
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(143,15) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(143,22) ]
+   remark #15388: vectorization support: reference z[i] has aligned access   [ vector.c(143,29) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.528
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 3 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 11 
+   remark #15477: vector cost: 4.500 
+   remark #15478: estimated potential speedup: 2.220 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(142,3)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at vector.c(146,3)
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(147,5) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(148,5) ]
+   remark #15388: vectorization support: reference z[i] has aligned access   [ vector.c(149,5) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15449: unmasked aligned unit stride stores: 3 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 11 
+   remark #15477: vector cost: 4.500 
+   remark #15478: estimated potential speedup: 2.440 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(152,3)
+   remark #15388: vectorization support: reference e[i] has aligned access   [ vector.c(153,15) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 8
+   remark #15309: vectorization support: normalized vectorization overhead 0.475
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 6 
+   remark #15477: vector cost: 2.500 
+   remark #15478: estimated potential speedup: 2.120 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(152,3)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at vector.c(156,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at vector.c(157,5)
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(158,17) ]
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(163,7) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15399: vectorization support: unroll factor set to 4
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15448: unmasked aligned unit stride loads: 1 
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 9 
+      remark #15477: vector cost: 4.000 
+      remark #15478: estimated potential speedup: 2.140 
+      remark #15488: --- end vector cost summary ---
+   LOOP END
+
+   LOOP BEGIN at vector.c(162,5)
+   LOOP END
+
+   LOOP BEGIN at vector.c(157,5)
+   <Remainder loop for vectorization>
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(158,17) ]
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(163,7) ]
+      remark #15335: remainder loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+      remark #15305: vectorization support: vector length 2
+      remark #15309: vectorization support: normalized vectorization overhead 2.417
+   LOOP END
+LOOP END
+
+LOOP BEGIN at vector.c(161,3)
+LOOP END
+
+LOOP BEGIN at vector.c(167,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at vector.c(168,5)
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(169,17) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15399: vectorization support: unroll factor set to 8
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15448: unmasked aligned unit stride loads: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 6 
+      remark #15477: vector cost: 2.500 
+      remark #15478: estimated potential speedup: 2.270 
+      remark #15488: --- end vector cost summary ---
+   LOOP END
+
+   LOOP BEGIN at vector.c(168,5)
+   <Remainder loop for vectorization>
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(169,17) ]
+      remark #15335: remainder loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+      remark #15305: vectorization support: vector length 2
+      remark #15309: vectorization support: normalized vectorization overhead 4.143
+   LOOP END
+LOOP END
+
+LOOP BEGIN at vector.c(171,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at vector.c(176,5)
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(177,7) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15399: vectorization support: unroll factor set to 4
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 4 
+      remark #15477: vector cost: 1.500 
+      remark #15478: estimated potential speedup: 2.500 
+      remark #15488: --- end vector cost summary ---
+   LOOP END
+
+   LOOP BEGIN at vector.c(176,5)
+   <Remainder loop for vectorization>
+   LOOP END
+LOOP END
+
+LOOP BEGIN at vector.c(175,3)
+LOOP END
+
+LOOP BEGIN at vector.c(181,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at vector.c(182,5)
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(183,17) ]
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(190,7) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15399: vectorization support: unroll factor set to 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.594
+      remark #15301: FUSED LOOP WAS VECTORIZED
+      remark #15448: unmasked aligned unit stride loads: 1 
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 9 
+      remark #15477: vector cost: 4.000 
+      remark #15478: estimated potential speedup: 2.050 
+      remark #15488: --- end vector cost summary ---
+   LOOP END
+
+   LOOP BEGIN at vector.c(189,5)
+   LOOP END
+
+   LOOP BEGIN at vector.c(182,5)
+   <Remainder loop for vectorization>
+   LOOP END
+LOOP END
+
+LOOP BEGIN at vector.c(186,3)
+LOOP END
+
+LOOP BEGIN at vector.c(194,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at vector.c(195,5)
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(196,17) ]
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(203,7) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15399: vectorization support: unroll factor set to 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.594
+      remark #15301: FUSED LOOP WAS VECTORIZED
+      remark #15448: unmasked aligned unit stride loads: 1 
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 9 
+      remark #15477: vector cost: 4.000 
+      remark #15478: estimated potential speedup: 2.050 
+      remark #15488: --- end vector cost summary ---
+   LOOP END
+
+   LOOP BEGIN at vector.c(202,5)
+   LOOP END
+
+   LOOP BEGIN at vector.c(195,5)
+   <Remainder loop for vectorization>
+   LOOP END
+LOOP END
+
+LOOP BEGIN at vector.c(199,3)
+LOOP END
+
+LOOP BEGIN at vector.c(207,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at vector.c(208,5)
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(209,17) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15399: vectorization support: unroll factor set to 8
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15448: unmasked aligned unit stride loads: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 6 
+      remark #15477: vector cost: 2.500 
+      remark #15478: estimated potential speedup: 2.270 
+      remark #15488: --- end vector cost summary ---
+   LOOP END
+
+   LOOP BEGIN at vector.c(208,5)
+   <Remainder loop for vectorization>
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(209,17) ]
+      remark #15335: remainder loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+      remark #15305: vectorization support: vector length 2
+      remark #15309: vectorization support: normalized vectorization overhead 4.143
+   LOOP END
+LOOP END
+
+LOOP BEGIN at vector.c(212,3)
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(213,15) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 8
+   remark #15309: vectorization support: normalized vectorization overhead 0.475
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 6 
+   remark #15477: vector cost: 2.500 
+   remark #15478: estimated potential speedup: 2.120 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(212,3)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at vector.c(218,3)
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(219,5) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 4 
+   remark #15477: vector cost: 1.500 
+   remark #15478: estimated potential speedup: 2.660 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(222,3)
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(223,15) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 8
+   remark #15309: vectorization support: normalized vectorization overhead 0.475
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 6 
+   remark #15477: vector cost: 2.500 
+   remark #15478: estimated potential speedup: 2.120 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(222,3)
+<Remainder loop for vectorization>
+LOOP END
+
+LOOP BEGIN at vector.c(226,3)
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(227,15) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 8
+   remark #15309: vectorization support: normalized vectorization overhead 0.475
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 6 
+   remark #15477: vector cost: 2.500 
+   remark #15478: estimated potential speedup: 2.120 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(226,3)
+<Remainder loop for vectorization>
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp1_(double *, double *, double *, int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(239,3)
+   remark #15388: vectorization support: reference e[i] has aligned access   [ vector.c(241,7) ]
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(241,14) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(241,21) ]
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(243,14) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(243,21) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 3 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 30 
+   remark #15477: vector cost: 9.000 
+   remark #15478: estimated potential speedup: 3.040 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(239,3)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference e[i] has aligned access   [ vector.c(241,7) ]
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(241,14) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(241,21) ]
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(243,14) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(243,21) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.333
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp2_(double *, double *, double *, int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(255,3)
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(258,8) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(258,15) ]
+   remark #15388: vectorization support: reference e[i] has aligned access   [ vector.c(259,3) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.054
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 2 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 16 
+   remark #15477: vector cost: 7.000 
+   remark #15478: estimated potential speedup: 2.160 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(255,3)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(258,8) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(258,15) ]
+   remark #15388: vectorization support: reference e[i] has aligned access   [ vector.c(259,3) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.650
+   remark #15301: REMAINDER LOOP WAS VECTORIZED
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp3_(double *, int, int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(273,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at vector.c(273,3)
+   <Multiversioned v2>
+      remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(274,5) ]
+      remark #15389: vectorization support: reference x[i+65] has unaligned access   [ vector.c(274,12) ]
+      remark #15381: vectorization support: unaligned access used inside loop body
+      remark #15305: vectorization support: vector length 2
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15450: unmasked unaligned unit stride loads: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 5 
+      remark #15477: vector cost: 2.000 
+      remark #15478: estimated potential speedup: 2.500 
+      remark #15488: --- end vector cost summary ---
+   LOOP END
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp4_(double *, int, int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(285,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at vector.c(285,3)
+   <Multiversioned v2>
+      remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(286,5) ]
+      remark #15388: vectorization support: reference x[i-100] has aligned access   [ vector.c(286,12) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15448: unmasked aligned unit stride loads: 1 
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 5 
+      remark #15477: vector cost: 1.500 
+      remark #15478: estimated potential speedup: 3.330 
+      remark #15488: --- end vector cost summary ---
+   LOOP END
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp5_(double *, double *, int, int, int, int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(296,3)
+   remark #15389: vectorization support: reference z[i+1] has unaligned access   [ vector.c(297,5) ]
+   remark #15388: vectorization support: reference z[i+2] has aligned access   [ vector.c(297,16) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(297,27) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 2 
+   remark #15451: unmasked unaligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 8 
+   remark #15477: vector cost: 3.500 
+   remark #15478: estimated potential speedup: 2.170 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(296,3)
+<Remainder loop for vectorization>
+   remark #15389: vectorization support: reference z[i+1] has unaligned access   [ vector.c(297,5) ]
+   remark #15388: vectorization support: reference z[i+2] has aligned access   [ vector.c(297,16) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(297,27) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15335: remainder loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+   remark #15305: vectorization support: vector length 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.769
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp6_(double *, double *, double *, int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(307,3)
+<Peeled loop for vectorization, Distributed chunk1>
+LOOP END
+
+LOOP BEGIN at vector.c(307,3)
+<Distributed chunk1>
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(309,5) ]
+   remark #15388: vectorization support: reference z[i] has aligned access   [ vector.c(309,12) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15301: PARTIAL LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 5 
+   remark #15477: vector cost: 3.000 
+   remark #15478: estimated potential speedup: 1.650 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(307,3)
+<Peeled loop for vectorization, Distributed chunk2>
+LOOP END
+
+LOOP BEGIN at vector.c(307,3)
+<Distributed chunk2>
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(308,5) ]
+   remark #15389: vectorization support: reference y[i-1] has unaligned access   [ vector.c(308,12) ]
+   remark #15381: vectorization support: unaligned access used inside loop body
+   remark #15305: vectorization support: vector length 2
+   remark #15301: PARTIAL LOOP WAS VECTORIZED
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 5 
+   remark #15477: vector cost: 2.500 
+   remark #15478: estimated potential speedup: 1.980 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp7_(double *, double *, double *, int *, int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(319,3)
+   remark #15388: vectorization support: reference e[i] has aligned access   [ vector.c(321,5) ]
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(321,12) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(321,19) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 2 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 8 
+   remark #15477: vector cost: 3.000 
+   remark #15478: estimated potential speedup: 2.500 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(319,3)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference e[i] has aligned access   [ vector.c(321,5) ]
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(321,12) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(321,19) ]
+   remark #15335: remainder loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+   remark #15305: vectorization support: vector length 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.833
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp8_(double *, double *, double *, double *, int *, int, int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(332,3)
+<Multiversioned v1>
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(333,5) ]
+   remark #15388: vectorization support: reference e[i] has aligned access   [ vector.c(334,5) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(334,12) ]
+   remark #15388: vectorization support: reference iy[i] has aligned access   [ vector.c(334,29) ]
+   remark #15388: vectorization support: reference iy[i] has aligned access   [ vector.c(334,29) ]
+   remark #15328: vectorization support: non-unit strided load was emulated for the variable <x[i*2]>, stride is 2   [ vector.c(333,12) ]
+   remark #15328: vectorization support: non-unit strided load was emulated for the variable <z[i+i]>, stride is 2   [ vector.c(333,23) ]
+   remark #15328: vectorization support: irregularly indexed load was emulated for the variable <y[(*(iy+i*4))*(*(iy+i*4))]>, part of index is read from memory   [ vector.c(334,19) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15449: unmasked aligned unit stride stores: 2 
+   remark #15450: unmasked unaligned unit stride loads: 2 
+   remark #15452: unmasked strided loads: 2 
+   remark #15462: unmasked indexed (or gather) loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 21 
+   remark #15477: vector cost: 11.500 
+   remark #15478: estimated potential speedup: 1.760 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(332,3)
+<Remainder loop for vectorization, Multiversioned v1>
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(333,5) ]
+   remark #15388: vectorization support: reference e[i] has aligned access   [ vector.c(334,5) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(334,12) ]
+   remark #15388: vectorization support: reference iy[i] has aligned access   [ vector.c(334,21) ]
+   remark #15388: vectorization support: reference iy[i] has aligned access   [ vector.c(334,21) ]
+   remark #15335: remainder loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+   remark #15305: vectorization support: vector length 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.432
+LOOP END
+
+LOOP BEGIN at vector.c(332,3)
+<Multiversioned v2>
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(333,5) ]
+   remark #15388: vectorization support: reference e[i] has aligned access   [ vector.c(334,5) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(334,12) ]
+   remark #15388: vectorization support: reference iy[i] has aligned access   [ vector.c(334,21) ]
+   remark #15388: vectorization support: reference iy[i] has aligned access   [ vector.c(334,21) ]
+   remark #15328: vectorization support: non-unit strided load was emulated for the variable <x[i*2]>, stride is 2   [ vector.c(333,12) ]
+   remark #15328: vectorization support: non-unit strided load was emulated for the variable <z[i+i]>, stride is 2   [ vector.c(333,23) ]
+   remark #15328: vectorization support: irregularly indexed load was emulated for the variable <y[(*(iy+i*4))*(*(iy+i*4))]>, part of index is read from memory   [ vector.c(334,19) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15449: unmasked aligned unit stride stores: 2 
+   remark #15450: unmasked unaligned unit stride loads: 2 
+   remark #15452: unmasked strided loads: 2 
+   remark #15462: unmasked indexed (or gather) loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 21 
+   remark #15477: vector cost: 11.500 
+   remark #15478: estimated potential speedup: 1.760 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(332,3)
+<Remainder loop for vectorization, Multiversioned v2>
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp9_(double *, double *, double *, int *, int *, int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(345,3)
+   remark #15344: loop was not vectorized: vector dependence prevents vectorization
+   remark #15346: vector dependence: assumed ANTI dependence between y[*(iy+i*4)] (346:5) and y[*(ix+i*4)] (348:5)
+   remark #15346: vector dependence: assumed FLOW dependence between y[*(ix+i*4)] (348:5) and y[*(iy+i*4)] (346:5)
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp10_(double *, double *, int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(358,3)
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(359,15) ]
+   remark #15388: vectorization support: reference e[i] has aligned access   [ vector.c(359,5) ]
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(359,15) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.024
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 113 
+   remark #15477: vector cost: 41.000 
+   remark #15478: estimated potential speedup: 2.750 
+   remark #15482: vectorized math library calls: 1 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp11_(double (*)[100], int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(377,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at vector.c(379,5)
+      remark #15389: vectorization support: reference a[i][j] has unaligned access   [ vector.c(380,7) ]
+      remark #15389: vectorization support: reference a[i][j] has unaligned access   [ vector.c(380,7) ]
+      remark #15381: vectorization support: unaligned access used inside loop body
+      remark #15305: vectorization support: vector length 2
+      remark #15399: vectorization support: unroll factor set to 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.053
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15450: unmasked unaligned unit stride loads: 1 
+      remark #15451: unmasked unaligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 30 
+      remark #15477: vector cost: 19.000 
+      remark #15478: estimated potential speedup: 1.560 
+      remark #15486: divides: 1 
+      remark #15488: --- end vector cost summary ---
+   LOOP END
+
+   LOOP BEGIN at vector.c(379,5)
+   <Remainder loop for vectorization>
+      remark #15389: vectorization support: reference a[i][j] has unaligned access   [ vector.c(380,7) ]
+      remark #15389: vectorization support: reference a[i][j] has unaligned access   [ vector.c(380,7) ]
+      remark #15381: vectorization support: unaligned access used inside loop body
+      remark #15305: vectorization support: vector length 2
+      remark #15309: vectorization support: normalized vectorization overhead 0.476
+      remark #15301: REMAINDER LOOP WAS VECTORIZED
+   LOOP END
+
+   LOOP BEGIN at vector.c(379,5)
+   <Remainder loop for vectorization>
+   LOOP END
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp12_(double (*)[100], double (*)[100], int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(398,3)
+   remark #15388: vectorization support: reference a[i+1][j] has aligned access   [ vector.c(400,7) ]
+   remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(400,19) ]
+   remark #15388: vectorization support: reference b[i][j] has aligned access   [ vector.c(400,29) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 2 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 6 
+   remark #15477: vector cost: 3.000 
+   remark #15478: estimated potential speedup: 1.990 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(398,3)
+<Remainder loop for vectorization>
+   remark #15388: vectorization support: reference a[i+1][j] has aligned access   [ vector.c(400,7) ]
+   remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(400,19) ]
+   remark #15388: vectorization support: reference b[i][j] has aligned access   [ vector.c(400,29) ]
+   remark #15335: remainder loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+   remark #15305: vectorization support: vector length 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.833
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp13_(double *, double *, double *, double (*)[100], double (*)[100], double *, double *, double *, int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(414,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at vector.c(417,5)
+      remark #15388: vectorization support: reference a[i][k] has aligned access   [ vector.c(418,7) ]
+      remark #15388: vectorization support: reference b[i][k] has aligned access   [ vector.c(418,17) ]
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(421,7) ]
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(421,17) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15399: vectorization support: unroll factor set to 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.115
+      remark #15301: FUSED LOOP WAS VECTORIZED
+      remark #15448: unmasked aligned unit stride loads: 2 
+      remark #15449: unmasked aligned unit stride stores: 2 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 16 
+      remark #15477: vector cost: 6.500 
+      remark #15478: estimated potential speedup: 2.300 
+      remark #15488: --- end vector cost summary ---
+   LOOP END
+
+   LOOP BEGIN at vector.c(420,5)
+   LOOP END
+
+   LOOP BEGIN at vector.c(417,5)
+   <Remainder loop for vectorization>
+      remark #15388: vectorization support: reference a[i][k] has aligned access   [ vector.c(418,7) ]
+      remark #15388: vectorization support: reference b[i][k] has aligned access   [ vector.c(418,17) ]
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(421,7) ]
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(421,17) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15309: vectorization support: normalized vectorization overhead 0.762
+      remark #15301: REMAINDER LOOP WAS VECTORIZED
+   LOOP END
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp14_(double *, double *, double *, double (*)[100], double (*)[100], double *, double *, double *, int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(434,3)
+   remark #15542: loop was not vectorized: inner loop was already vectorized
+
+   LOOP BEGIN at vector.c(437,5)
+   <Distributed chunk1>
+      remark #15388: vectorization support: reference a[i][k] has aligned access   [ vector.c(438,7) ]
+      remark #15388: vectorization support: reference b[i][k] has aligned access   [ vector.c(438,17) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15399: vectorization support: unroll factor set to 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.100
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15448: unmasked aligned unit stride loads: 1 
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 7 
+      remark #15477: vector cost: 2.500 
+      remark #15478: estimated potential speedup: 2.590 
+      remark #15488: --- end vector cost summary ---
+   LOOP END
+
+   LOOP BEGIN at vector.c(440,5)
+   LOOP END
+
+   LOOP BEGIN at vector.c(437,5)
+   <Distributed chunk2>
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(441,7) ]
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(441,17) ]
+      remark #15388: vectorization support: reference x[j] has aligned access   [ vector.c(441,27) ]
+      remark #15305: vectorization support: vector length 2
+      remark #15399: vectorization support: unroll factor set to 4
+      remark #15309: vectorization support: normalized vectorization overhead 0.062
+      remark #15300: LOOP WAS VECTORIZED
+      remark #15448: unmasked aligned unit stride loads: 2 
+      remark #15449: unmasked aligned unit stride stores: 1 
+      remark #15475: --- begin vector cost summary ---
+      remark #15476: scalar cost: 9 
+      remark #15477: vector cost: 4.000 
+      remark #15478: estimated potential speedup: 2.130 
+      remark #15488: --- end vector cost summary ---
+   LOOP END
+
+   LOOP BEGIN at vector.c(437,5)
+   <Remainder loop for vectorization, Distributed chunk1>
+      remark #15388: vectorization support: reference a[i][k] has aligned access   [ vector.c(438,7) ]
+      remark #15388: vectorization support: reference b[i][k] has aligned access   [ vector.c(438,17) ]
+      remark #15335: remainder loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+      remark #15305: vectorization support: vector length 2
+      remark #15309: vectorization support: normalized vectorization overhead 1.333
+   LOOP END
+
+   LOOP BEGIN at vector.c(437,5)
+   <Remainder loop for vectorization, Distributed chunk2>
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(441,7) ]
+      remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(441,17) ]
+      remark #15388: vectorization support: reference x[j] has aligned access   [ vector.c(441,27) ]
+      remark #15335: remainder loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+      remark #15305: vectorization support: vector length 2
+      remark #15309: vectorization support: normalized vectorization overhead 0.857
+   LOOP END
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp15_(double (*)[100], double (*)[100], double (*)[100], int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(459,3)
+   remark #15388: vectorization support: reference a[i][j] has aligned access   [ vector.c(465,7) ]
+   remark #15388: vectorization support: reference b[i][j] has aligned access   [ vector.c(465,17) ]
+   remark #15388: vectorization support: reference c[i][j] has aligned access   [ vector.c(465,27) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15309: vectorization support: normalized vectorization overhead 0.062
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 2 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 9 
+   remark #15477: vector cost: 4.000 
+   remark #15478: estimated potential speedup: 2.240 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp16_(double *, double *, double *, int *, int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(478,3)
+<Distributed chunk1>
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(479,5) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(479,12) ]
+   remark #15388: vectorization support: reference z[i] has aligned access   [ vector.c(479,19) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15301: PARTIAL LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 2 
+   remark #15449: unmasked aligned unit stride stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 8 
+   remark #15477: vector cost: 2.500 
+   remark #15478: estimated potential speedup: 2.940 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(478,3)
+<Remainder loop for vectorization, Distributed chunk1>
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(479,5) ]
+   remark #15388: vectorization support: reference y[i] has aligned access   [ vector.c(479,12) ]
+   remark #15388: vectorization support: reference z[i] has aligned access   [ vector.c(479,19) ]
+   remark #15335: remainder loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+   remark #15305: vectorization support: vector length 2
+   remark #15309: vectorization support: normalized vectorization overhead 0.909
+LOOP END
+
+LOOP BEGIN at vector.c(478,3)
+<Distributed chunk2>
+   remark #15388: vectorization support: reference ix[i] has aligned access   [ vector.c(480,7) ]
+   remark #15329: vectorization support: irregularly indexed store was emulated for the variable <x[*(ix+i*4)]>, part of index is read from memory   [ vector.c(480,5) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 4
+   remark #15301: PARTIAL LOOP WAS VECTORIZED
+   remark #15450: unmasked unaligned unit stride loads: 1 
+   remark #15463: unmasked indexed (or scatter) stores: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 7 
+   remark #15477: vector cost: 4.000 
+   remark #15478: estimated potential speedup: 1.690 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(478,3)
+<Remainder loop for vectorization, Distributed chunk2>
+   remark #15388: vectorization support: reference ix[i] has aligned access   [ vector.c(480,7) ]
+   remark #15335: remainder loop was not vectorized: vectorization possible but seems inefficient. Use vector always directive or -vec-threshold0 to override 
+   remark #15305: vectorization support: vector length 2
+   remark #15309: vectorization support: normalized vectorization overhead 1.083
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp17_(double *, double *, int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(493,3)
+   remark #15388: vectorization support: reference x[i] has aligned access   [ vector.c(494,11) ]
+   remark #15305: vectorization support: vector length 2
+   remark #15399: vectorization support: unroll factor set to 8
+   remark #15309: vectorization support: normalized vectorization overhead 0.475
+   remark #15300: LOOP WAS VECTORIZED
+   remark #15448: unmasked aligned unit stride loads: 1 
+   remark #15475: --- begin vector cost summary ---
+   remark #15476: scalar cost: 6 
+   remark #15477: vector cost: 2.500 
+   remark #15478: estimated potential speedup: 2.120 
+   remark #15488: --- end vector cost summary ---
+LOOP END
+
+LOOP BEGIN at vector.c(493,3)
+<Remainder loop for vectorization>
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp18_(double *, double *, int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(504,3)
+   remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ vector.c(506,5) ]
+LOOP END
+===========================================================================
+
+Begin optimization report for: bsp19_(double *, double *, int)
+
+    Report from: Vector optimizations [vec]
+
+
+LOOP BEGIN at vector.c(517,3)
+   remark #15520: loop was not vectorized: loop with multiple exits cannot be vectorized unless it meets search loop idiom criteria   [ vector.c(521,5) ]
+LOOP END
+===========================================================================
