@@ -866,6 +866,19 @@ The code was improved in following ways:
 \end{itemize}
 
 \section{Vectorization across equal-shaped problems/sub-tasks}
+\subsubsection*{Sketch of Gaussian Elimination.}
+Figure \ref{graph} illustrates the algorithm as implemented in the source code.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics{graph.pdf}
+    \caption{Demonstration of Gaussian Elimination}
+    \label{graph}
+  \end{center}
+\end{figure}
+
+\subsubsection*{Solving a linear system of rank 3 cannot be vectorized efficiently. Explain why.}
+The algorithm implemented in gauss.c has several read-after-write conflicts. For instance, when dividing entries in the first row of A by $a_{00}$, $a_{01}$ is overwritten. Upon updating the second row, $a_{01}$ is read. Entries from the second row are again read when updating the third row. For $n$ higher than 3, it is possible that there are enough operations between conflicting ones to allow for optimal vectorization.
 \section{Matrix-Matrix-Multiplication I}
 
 \end{document}
