@@ -105,9 +105,9 @@ Following conditions must be fulfilled:
 \begin{enumerate}
 \item Proven dependencies\\Loop-carried dependencies:
 \begin{itemize}
-\item Read-after-write: A memory location written at iteration \texttt{i} is read at a later iteration \texttt{i+x}. Cannot safely be vectorized.
-\item Write-after-read: A memory location read at iteration \texttt{i} is written at a later iteration \texttt{i+x}. Can safely be vectorized if there is no other use of that memory location in the loop body.
-\item Write-after-write: The same memory location is written in different iterations. This can generally not be safely vectorized.
+\item Read-after-write (flow dependency): A memory location written at iteration \texttt{i} is read at a later iteration \texttt{i+x}. Cannot safely be vectorized.
+-\item Write-after-read (anti dependency): A memory location read at iteration \texttt{i} is written at a later iteration \texttt{i+x}. Can safely be vectorized if there is no other use of that memory location in the loop body.
+-\item Write-after-write (output dependency): The same memory location is written in different iterations. This can generally not be safely vectorized.
 \end{itemize}
 There is an exception for some reduction idioms (e.g. multiply-accumulate) that are recognized by the compiler and contain the above dependencies. These can still be safely vectorized.
 \item Potential dependencies\\Pointer aliasing:
@@ -878,7 +878,8 @@ Figure \ref{graph} illustrates the algorithm as implemented in the source code, 
 \end{figure}
 
 \subsubsection*{Solving a linear system of rank 3 cannot be vectorized efficiently. Explain why.}
-The algorithm implemented in gauss.c has several read-after-write conflicts. For instance, when dividing entries in the first row of A by $a_{00}$, $a_{01}$ is overwritten. Upon updating the second row, $a_{01}$ is read. Entries from the second row are again read when updating the third row. For $n$ higher than 3, it is possible that there are enough operations between conflicting ones to allow for optimal vectorization.
+\texttt{n=3} results in loops with too small trip count. No effective pipelining is possible because the loop terminates soon. Furthermore only for a single outer iteration an SSE vectorization of the inner loops is possible. For the remaining outer iterations there is not enough data within the inner loops to use vectorized instructions, again because of too small trip counts of the inner loops.
+
 \section{Matrix-Matrix-Multiplication I}
 
 \subsection*{Examine the memory access of the given implementation.}
