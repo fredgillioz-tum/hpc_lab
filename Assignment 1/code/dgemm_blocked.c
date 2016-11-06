@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 						s = c[(ii + i)*n + jj + j];
 #pragma vector aligned
 						for(k=0; k<kStop; ++k){
-							s += a[(ii + i)*n + kk + k] * b[(kk + k)*n + jj];
+							s += a[(ii + i)*n + kk + k] * b[(kk + k)*n + jj + j];
 						}
 						c[(ii + i)*n + jj + j] = s;
 					}
