@@ -1,6 +1,7 @@
 Alignment:
 * __declspec(align(16)) : Variablendeklaration
 * __assume_aligned(x, 16) : Deklaration Funktionsparameter (wenn kein IPO)
+* memalign(16, sizeInBytes) : Allocate aligned memory.
 
 Optimization options:
 * -O2 : Aktiviert Vektorisierung. Ausschalten mit -no-vec
