@@ -6,7 +6,7 @@ Alignment:
 Optimization options:
 * -O2 : Aktiviert Vektorisierung. Ausschalten mit -no-vec
 * -O3 : High-level optimizations (HLO): Erweiterte Schleifentransformationen
-* -qipo, -qip : Interprocedural optimization (IPO): Sammelt global Daten (innerhalb aller
+* -ipo, -ip : Interprocedural optimization (IPO): Sammelt global Daten (innerhalb aller
   Dateien bzw. nur in aktueller Datei) für bessere Abschätzung von trip counts, data alignment,
   oder data dependencies.
 * -[no-]qopt-dynamic-align : dynamic data alignment optimizations an/aus
