@@ -1,14 +1,28 @@
 \documentclass[11pt]{beamer}
 \usetheme{Singapore}
 \usepackage[utf8]{inputenc}
-\usepackage[ngerman,english]{babel}
+%\usepackage[ngerman,english]{babel} % Disabled because it caused errors
 \usepackage{csquotes}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage{mathtools}
+%\usepackage{mathtools}
 \usepackage{graphicx}
-\author{Frédéric Gillioz\\{\small \texttt{frederic.gillioz@tum.de}}\\\vspace{10pt}Andreas Amler\\{\small \texttt{????}}}
+\usepackage{listings}
+
+\newcommand{\codestylec}{
+	\lstset{
+		language=C,
+		frame=single,
+		basicstyle=\scriptsize\ttfamily,
+		commentstyle=\color{mygreen},
+		keywordstyle=\color{blue},
+		stringstyle=\color{red},
+		morecomment=[l][\color{magenta}]{\#}
+	}
+}
+
+\author{Frédéric Gillioz\\{\small \texttt{frederic.gillioz@tum.de}}\\\vspace{10pt}Andreas Amler\\{\small \texttt{andreas.amler@tum.de}}}
 \title{Assignment 1: Vectorization\\{\footnotesize Lab Course: High Performance Computing}}
 %\setbeamercovered{transparent}
 \setbeamertemplate{navigation symbols}{}

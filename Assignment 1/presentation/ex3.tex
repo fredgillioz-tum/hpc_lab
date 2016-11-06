@@ -1,25 +1,21 @@
 \section{Exercise 3: Vectorization across equal-shaped problems/sub-tasks}
-\subsection{sub task 1}
-\begin{frame}[allowframebreaks]{auto-framebreaking}
+\begin{frame}[fragile]
+\frametitle{Vectorization of Gauss Elimination}
+The general loop structure:
+\codestylec
+\begin{lstlisting}
+for (i = 0; i < n; i++){
+    ...
+    for (j = i+1; j < n; j++){
+        ...
+    for (j = i+1; j < n; j++){
+        ...
+        for (k = i; k < n; k++){
+            ...                   
+\end{lstlisting}
+Problem:
 \begin{itemize}
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
+\item No loop has more than n iterations
+\item For \texttt{n=3}: Too small trip count
 \end{itemize}
 \end{frame}
