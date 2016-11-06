@@ -878,7 +878,26 @@ Figure \ref{graph} illustrates the algorithm as implemented in the source code, 
 \end{figure}
 
 \subsubsection*{Solving a linear system of rank 3 cannot be vectorized efficiently. Explain why.}
+
 \texttt{n=3} results in loops with too small trip count. No effective pipelining is possible because the loop terminates soon. Furthermore only for a single outer iteration an SSE vectorization of the inner loops is possible. For the remaining outer iterations there is not enough data within the inner loops to use vectorized instructions, again because of too small trip counts of the inner loops.
+
+\subsection*{Vectorization of the Gaussian-elimination}
+
+Several actions were made to facilitate and improve the Intel compiler's auto-vectorization:
+\begin{itemize}
+\item Using a structure of arrays instead of an array of structures: In the original implementation the components of a single vector were consecutively stored in memory. Now first all first components of a vector over all equation systems are stored consecutively. Then all second components over all equation systems are stored consecutively and so on. This allows very effective vectorization across multiple distinct (but similar) problems, instead within one problem.
+\item Data was suitably aligned.
+\item The \texttt{restrict} keyword was used to support dependency checking of the compiler.
+\end{itemize}
+
+Another change is fundamental: As the coefficient matrix is constant for all equation systems, instead of doing a Gaussian-elimination plus a backwards-substituation, an LU decomposition is done once upfront and then all equation systems are solved by a forwards- and backwards-substituation which is then more efficient for the whole problem set.
+
+These changes improved the performance by a factor of roughly 2.93. This result was generated on a private computer as there was an issue compiling programs on the Linux cluster at that time. The expected improvement on the cluster is even higher because of wider vector operations (AVX instead of SSE).
+
+The program is in \texttt{gauss\_vectorized.c}. Compile with\\
+\begin{center}
+\texttt{icc -restrict -O3 -ipo gauss\_vectorized.c timer.c}
+\end{center}
 
 \section{Matrix-Matrix-Multiplication I}
 

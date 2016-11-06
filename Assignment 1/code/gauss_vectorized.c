@@ -60,9 +60,6 @@ int main() {
 	backwardSubstitute(a, x, x); // We declared all arguments as "restrict". However we know its safe to overlap x here.
 
 	printf("NAIV: Time elapsed. time: %f   ticks: %f\n", get_ToD_diff_time(time), get_ticks_diff_time(time));
-
-	print_vector("x", x, 0);
-
 	return(0);
 }
 
