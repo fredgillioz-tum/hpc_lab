@@ -1,17 +1,112 @@
 \section{Exercise 2: Dependency checks and vectorization}
-\begin{frame}{header1}
-\begin{itemize}
-\item point 1
-\item point 2
-\item point 3
-\end{itemize}
+
+\begin{frame}{}
+\begin{center}
+{\Huge Exercise 2: Dependency checks and vectorization}\\\vspace{20pt}
+{\Large Just a selection.}
+\end{center}
 \end{frame}
 
-\subsection{sub task}
-\begin{frame}{header2}
+\begin{frame}{}
+Complied with:
+\begin{center}
+icc -restrict -O3 -ipo -ip-no-inlining -qopt-report=3 -qopt-report-phase=vec vector.c
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{bsp1\_}
 \begin{itemize}
-\item point 1
-\item point 2
-\item point 3
+\item Yes.
+\item Masked assignment.
+\end{itemize}
+\begin{verbatim}
+  for (i=0; i< n; i++) {
+    if (x[i] > 0.) {
+      e[i] = x[i] + y[i];
+    } else {
+      e[i] = x[i] - y[i];
+    }
+  }
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{bsp2\_}
+\begin{itemize}
+\item Yes.
+\item Exotically written loop, but still a loop!
+\end{itemize}
+\begin{verbatim}
+  i = 0;
+L10:
+  /* Computing 3rd power */
+  r1 = x[i] - y[i];
+  e[i] = r1 * (r1 * r1);
+  i++;
+  if (i < n) {
+    goto L10;
+  }
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{bsp4\_}
+\begin{itemize}
+\item Yes.
+\item Read-after-write dependency, but offset is big enough!
+\end{itemize}
+\begin{verbatim}
+  l = -100;
+  for (i = n ; i < nn; i++) {
+    x[i] = x[i + l];
+  }
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{bsp8\_}
+\begin{itemize}
+\item No. Or maybe little bit?
+\item Non-unit strided access to \texttt{x}, \texttt{z} and \texttt{y}.
+\item Indirect addressing.
+\item Still the compiler managed to vectorize this through emulation of non-unit strided and irregularly indexed loads. Estimated potential speedup: 1.44
+\end{itemize}
+\begin{verbatim}
+  for (i=0; i < n; i++) {
+    x[i] = x[i * 2] + z[i + i];
+    e[i] = y[i] + y[iy[i] * iy[i]];
+  }
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{bsp12\_}
+\begin{itemize}
+\item Yes.
+\item Original order of nested loops results in non-unit strided access. However compiler can interchange the order of both loops.
+\end{itemize}
+\begin{verbatim}
+  for (j=0; j < n; j++) {
+    for (i=0; i < n-1; i++) {
+      a[i+1][j] = a[i][j] * b[i][j];
+    }
+  }
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{bsp17\_}
+\begin{itemize}
+\item Normally not.
+\item There is a write-after-write dependency in \texttt{s} that would normally prohibit vectorization.
+\item However the compiler detects this reduction idiom and safely vectorizes the loop.
+\end{itemize}
+\begin{verbatim}
+  *s = 0.;
+  for (i = 0; i < n; i++) {
+    *s += x[i];
+  }
+\end{verbatim}
+\end{frame}
+
+\begin{frame}{Improving the code}
+\begin{itemize}
+\item Arrays have been declared with \texttt{\_\_declspec(align(16))}.
+\item Declaring \texttt{f\_()} as \texttt{inline} facilitates vectorization of \texttt{bsp10\_}
 \end{itemize}
 \end{frame}

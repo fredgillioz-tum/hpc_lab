@@ -1,5 +1,11 @@
 \section{Exercise 1: Auto-vectorization}
 
+\begin{frame}{}
+\begin{center}
+{\Huge Exercise 1: Auto-vectorization}
+\end{center}
+\end{frame}
+
 \begin{frame}{Which kinds of loops can be vectorized automatically?}
 Following conditions must be fulfilled:
 \begin{itemize}
@@ -7,58 +13,71 @@ Following conditions must be fulfilled:
 \item No prohibiting data dependencies
 \item Unit stride: Loop increment by one only
 \item Supported operations and data types in the loop body
-\item Countable
-\item Straight-line code: no switch, goto, continue, return
-\item No function calls
+\item Countable: The number of iterations must be known and fixed when entering the loop at runtime. No data-dependent exits. \enquote{Single entry and a single exit}.
+\item Straight-line code: The control flow of every iteration must be the same. Exception: Masked assignments (selective writing).
+\item No function calls. Exceptions: Intrinsic math functions and \enquote{compatible} functions.
 \end{itemize}
 \end{frame}
 
+\begin{frame}{Which datatypes and operations are allowed in order to enable auto-vectorization of loops?}
+\begin{center}
+\begin{Large}
+SSE Specific:
+\end{Large}
+\end{center}
 
-\begin{frame}{Datatypes and operations}
-Integers: 
+Integers:
 \begin{itemize}
-	\item 8-, 16- and 32-bit: Full support
+	\item 8-, 16- and 32-bit: Most arithmetic and logical operators
+	\item Exception: No direct support for division!
+	\item Many mathematical functions: \texttt{sqrt}, \texttt{min}, \texttt{max}, \texttt{abs}
 	\item 64-bit: limited support
 \end{itemize}
 32- and 64-bit floats: 
 \begin{itemize}
 	\item +, -, *, /, min, max and sqrt
-	\item Functions from a specialized library
+	\item Functions from a vectorized math library, e.g. trigonometric functions.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Types of dependency analysis}
+\begin{frame}{Which types of dependency analysis do the compiler perform?}
+\begin{enumerate}
+\item Proven dependencies/Loop-carried dependencies:
 \begin{itemize}
-	\item Read-after-write
-	\item Write-after-read
-	\item Write-after-write
+\item Read-after-write (flow dependency): Possibly reading too early. Cannot safely be vectorized.
+-\item Write-after-read (anti dependency): Can mostly be safely vectorized (if there is no other use of that memory location in the loop body).
+-\item Write-after-write (output dependency): This can generally not be safely vectorized.
 \end{itemize}
+Exception: Some reduction idioms (e.g. multiply-accumulate) recognized by the compiler are safely vectorized.
+\item Potential dependencies/Pointer aliasing:
+The compiler may check at compile or runtime (by inserting some checker code) for overlapping memory regions caused by pointer aliasing.
+\end{enumerate}
 \end{frame}
 
-
-\begin{frame}{The effect of programming style}
+\begin{frame}{How does programming style influence auto-vectorization?}
 Things to avoid:
 \begin{itemize}
 	\item Global pointers
 	\item Manual loop optimizations
 	\item Indirect addressing
 	\item Misaligned data
-	\item Arrays of structures
+	\item Arrays of structures (AoS)
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Language extensions}
+\begin{frame}{Is there a way to assist the compiler through language extensions? If yes, please give details.}
 \begin{itemize}
-\item \texttt{\#pragma novector} 
+\item \texttt{\#pragma novector}
 \item \texttt{\#pragma ivdep}
 \item \texttt{\#pragma loop count (n)}
 \item \texttt{\#pragma vector always}
 \item \texttt{\#pragma vector aligned}
 \item \texttt{\#pragma vector nontemporal}
+\item restrict
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Loop optimizations}
+\begin{frame}{Which loop optimizations are performed by the compiler in order to vectorize and pipeline loops?}
 \begin{itemize}
 \item Loop sectioning (Strip-mining)
 \item Loop blocking
@@ -67,6 +86,3 @@ Things to avoid:
 \item Loop collapsing
 \end{itemize}
 \end{frame}
-
-
-
