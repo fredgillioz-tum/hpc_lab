@@ -1,17 +1,72 @@
 \section{Exercise 1: Auto-vectorization}
-\begin{frame}{header1}
+
+\begin{frame}{Which kinds of loops can be vectorized automatically?}
+Following conditions must be fulfilled:
 \begin{itemize}
-\item point 1
-\item point 2
-\item point 3
+\item Only innermost loops
+\item No prohibiting data dependencies
+\item Unit stride: Loop increment by one only
+\item Supported operations and data types in the loop body
+\item Countable
+\item Straight-line code: no switch, goto, continue, return
+\item No function calls
 \end{itemize}
 \end{frame}
 
-\subsection{sub task}
-\begin{frame}{header2}
+
+\begin{frame}{Datatypes and operations}
+Integers: 
 \begin{itemize}
-\item point 1
-\item point 2
-\item point 3
+	\item 8-, 16- and 32-bit: Full support
+	\item 64-bit: limited support
+\end{itemize}
+32- and 64-bit floats: 
+\begin{itemize}
+	\item +, -, *, /, min, max and sqrt
+	\item Functions from a specialized library
 \end{itemize}
 \end{frame}
+
+\begin{frame}{Types of dependency analysis}
+\begin{itemize}
+	\item Read-after-write
+	\item Write-after-read
+	\item Write-after-write
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{The effect of programming style}
+Things to avoid:
+\begin{itemize}
+	\item Global pointers
+	\item Manual loop optimizations
+	\item Indirect addressing
+	\item Misaligned data
+	\item Arrays of structures
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Language extensions}
+\begin{itemize}
+\item \texttt{\#pragma novector} 
+\item \texttt{\#pragma ivdep}
+\item \texttt{\#pragma loop count (n)}
+\item \texttt{\#pragma vector always}
+\item \texttt{\#pragma vector aligned}
+\item \texttt{\#pragma vector nontemporal}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Loop optimizations}
+\begin{itemize}
+\item Loop sectioning (Strip-mining)
+\item Loop blocking
+\item Loop interchanging
+\item Loop peeling
+\item Loop collapsing
+\end{itemize}
+\end{frame}
+
+
+

@@ -1,25 +1,61 @@
 \section{Exercise 3: Vectorization across equal-shaped problems/sub-tasks}
-\subsection{sub task 1}
-\begin{frame}[allowframebreaks]{auto-framebreaking}
+\begin{frame}[fragile]
+\frametitle{Vectorization of Gauss Elimination}
+The general loop structure:
+\codestylec
+\begin{lstlisting}
+for (i = 0; i < n; i++){
+    ...
+    for (j = i+1; j < n; j++){
+        ...
+    for (j = i+1; j < n; j++){
+        ...
+        for (k = i; k < n; k++){
+            ...                   
+\end{lstlisting}
+Problem:
 \begin{itemize}
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
-\item this is a large side broken into multiple slides
+\item No loop has more than n iterations
+\item For \texttt{n=3}: Too small trip count
 \end{itemize}
+\end{frame}
+
+\begin{frame}{Idea: LU factorization}
+\begin{itemize}
+\item Same matrix $A$ for 2000 systems
+\item Decompose $A$ such that $A = LU$
+\item $L$ and $U$ are triangular
+\break
+\item For each system:
+	\begin{enumerate}
+	\item Solve $Ly = b$
+	\item Solve $Ux = y$
+	\end{enumerate}
+\item Only need 2 substitutions per system
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Vectorization}
+Loop for a single substitution:
+\codestylec
+\begin{lstlisting}
+    for (i = n-1; i >= 0; i--) {
+        x[i] = b[i];
+        for(j = i+1; j < n; j++) {
+            x[i] -= a[i][j] * x[j];
+        }
+    }                  
+\end{lstlisting}
+How to do this 2000 times efficiently?
+\begin{itemize}
+\item Calculate $x[2]$ for all systems
+\item Calculate $x[1]$ for all systems
+\item Calculate $x[0]$ for all systems
+\item Can be vectorized efficiently
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Vectorization 2}
+%TODO: show some code and results
 \end{frame}
