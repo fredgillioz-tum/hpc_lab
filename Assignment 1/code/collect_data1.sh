@@ -1,6 +1,6 @@
 #!/bin/bash
 
-nlist=(250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750)
+nlist=(128, 256, 512, 768, 1024)
 for n in "${nlist[@]}"; do
 	# Measure performance without valgrind overhead.
 	./a.out $n
