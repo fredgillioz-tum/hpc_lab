@@ -76,7 +76,7 @@
 
 \begin{itemize}
 \item All results in this report were produced on a Linux system. Therefore some aspects mentioned in this report, like compiler option syntax, are Linux specific.
-\item The Intel C/C++ compiler version 17 was used.
+\item The Intel C/C++ compiler version 17 was used for local builds and version 16 for tests on the Linux cluster.
 \item Intel compiler 2017 installation on Ubuntu: Extracted installer package may not be located in a path containing a space character otherwise the installation procedure fails at the licensing step.
 \item We have set-up a GitHub repository for collaborative working on the deliverables.
 \end{itemize}
@@ -865,14 +865,21 @@ The code was improved in following ways:
 \item Declaring \texttt{f\_()} as \texttt{inline} facilitates vectorization of \texttt{bsp10\_}.
 \end{itemize}
 
+The changes are in the file \texttt{vector\_modified.c}. Compile with
+\begin{center}
+\texttt{icc -restrict -O3 -ipo -ip-no-inlining -qopt-report=3 -qopt-report-phase=vec vector\_modified.c}
+\end{center}
+
+The optimization report of the unmodified file is \texttt{vector\_0\_original\_level5.optrpt}. The report after having improved only the data alignment is in \texttt{vector\_1\_aligned\_level5.optrpt} and the report of all changes is in \texttt{vector\_2\_all\_changes\_level5.optrpt}.
+
 \section{Vectorization across equal-shaped problems/sub-tasks}
 \subsubsection*{Sketch of Gaussian Elimination.}
 Figure \ref{graph} illustrates the algorithm as implemented in the source code, but using a custom example matrix $A$ and vector $b$.
 
 \begin{figure}[h]
   \begin{center}
-    \includegraphics{../graphics/graph.pdf}
-    \caption{Demonstration of Gaussian Elimination}
+    \includegraphics[scale=0.7]{../graphics/graph.pdf}
+    \caption{Demonstration of Gaussian Elimination.}
     \label{graph}
   \end{center}
 \end{figure}
@@ -890,11 +897,11 @@ Several actions were made to facilitate and improve the Intel compiler's auto-ve
 \item The \texttt{restrict} keyword was used to support dependency checking of the compiler.
 \end{itemize}
 
-Another change is fundamental: As the coefficient matrix is constant for all equation systems, instead of doing a Gaussian-elimination plus a backwards-substituation, an LU decomposition is done once upfront and then all equation systems are solved by a forwards- and backwards-substituation which is then more efficient for the whole problem set.
+Another change is fundamental: As the coefficient matrix is constant for all equation systems, instead of doing a Gaussian-elimination plus a backwards-substituation, an LU decomposition is done once upfront and then all equation systems are solved by a forwards- and backwards-substituation which is more efficient for the whole problem set.
 
 These changes improved the performance by a factor of roughly 2.93. This result was generated on a private computer as there was an issue compiling programs on the Linux cluster at that time. The expected improvement on the cluster is even higher because of wider vector operations (AVX instead of SSE).
 
-The program is in \texttt{gauss\_vectorized.c}. Compile with\\
+The program is in \texttt{gauss\_vectorized.c}. Compile with
 \begin{center}
 \texttt{icc -restrict -O3 -ipo gauss\_vectorized.c timer.c}
 \end{center}
@@ -913,12 +920,17 @@ The only thing that could be done in order to support auto-vectorization is to a
 
 \subsection*{Measure MFLOPS rates and cache-miss-rates for different problems sizes and plot your results. Please use Valgrind for measuring the cache-miss rate.}
 
-Sample data was recorded using the modified program \texttt{dgemm\_variable\_problem\_size.c} and the shell script \texttt{collect\_data1.sh}. Results for MFLOP rates can be seen in figure \ref{unblocked}. The cache-miss rate was constant over all tested problem sizes at 8.3 percent.
+Sample data was recorded using the modified program \texttt{dgemm\_variable\_problem\_size.c} and the shell script \texttt{collect\_data1.sh}. The made changes are only to enable logging facilities. The measured performance is illustrated in Figure \ref{unblocked}. The cache-miss rate was constant over all tested problem sizes at 8.3 percent.
+
+Compile with
+\begin{center}
+\texttt{icc -O3 -ipo dgemm\_variable\_problem\_size.c timer.c}
+\end{center}
 
 \begin{figure}[h]
   \begin{center}
     \includegraphics{../graphics/graph_unblocked.pdf}
-    \caption{Performance of non-blocked matrix multiplication}
+    \caption{Performance of non-blocked matrix multiplication.}
     \label{unblocked}
   \end{center}
 \end{figure}
@@ -935,43 +947,51 @@ We get the best performance for $n = 400$.
 
 \subsection*{Is the obtained performance stable?}
 
-As can be seen in figure \ref{unblocked}, the performance fluctuates. Furthermore, it decreases noticeably once the problem size $n$ surpasses 400.
+As can be seen in Figure \ref{unblocked}, the performance fluctuates. Furthermore, it decreases noticeably once the problem size $n$ surpasses 400.
 
 \subsection*{Please explain the obtained performance using hardware properties (such as cache size, memory bandwidth, or similar).}
 
-The decline for higher problem sizes can be explained with cache size. %TODO: more detail
+The most important hardware component that is responsible for the observed performance is the CPU cache. The Haswell EP processors of CooLMUC2 have a L1 cache size of 64kB per core of which half is used for data. Doing a matrix-matrix multiplication the performance is best, when both whole matrices fit into the L1 data cache. Therefore both matrix must fit into 32kB. This makes 16kB for one matrix and 4kB for one row or column of a square matrix. As one double takes 8 Bytes of storage, the theoretical maximum matrix size is for \texttt{n=512} in order to obtain optimal performance.
 
 \subsection*{Cache-blocking}
-Sample data for matrix-matrix-multiplication with cache blocking was recorded using the modified program \texttt{dgemm\_blocked.c} and the shell script \texttt{collect\_data2.sh}. Results for MFLOP rates can be seen in figure \ref{blocked_flops}. Results for cache-miss rate can be seen in figure \ref{blocked_cache}. %TODO: changes with higher n
+Sample data for matrix-matrix-multiplication with cache blocking was recorded using the modified program \texttt{dgemm\_blocked.c} and the shell script \texttt{collect\_data2.sh}. The measured performance is illustrated in Figure \ref{blocked_flops}. Results for cache-miss rate can be seen in Figure \ref{blocked_cache}. The performance of the blocked matrix-matrix multiplication is independent of the matrix size. This cannot clearly be seen from the illustrations as there are too few samples (there were difficulties running the test program as a batch job on the Linux cluster).
+
+Compile with
+\begin{center}
+\texttt{icc -O3 -ipo dgemm\_blocked.c timer.c}
+\end{center}
 
 \begin{figure}[h]
   \begin{center}
-    \includegraphics{../graphics/graph_unblocked.pdf}	% TODO: replace with real graph
-    \caption{FLOPS of blocked matrix multiplication}
+    \includegraphics[scale=0.8]{../graphics/graph_blocked_flops.pdf}
+    \caption{FLOPS of blocked matrix multiplication.}
     \label{blocked_flops}
   \end{center}
 \end{figure}
 
 \begin{figure}[h]
   \begin{center}
-    \includegraphics{../graphics/graph_unblocked.pdf}	% TODO: replace with real graph
-    \caption{Cache-miss rate of blocked matrix multiplication}
+    \includegraphics[scale=0.8]{../graphics/graph_blocked_cache.pdf}
+    \caption{Cache-miss rate of blocked matrix multiplication.}
     \label{blocked_cache}
   \end{center}
 \end{figure}
 
 \subsection*{Cache-blocking and vector-intrinsics}
 
-%note: cache-miss rate for avx wasn't demanded by the task
-The vector intrinsics \texttt{\_mm256\_load\_pd}, \texttt{\_mm256\_fmadd\_pd} and \texttt{\_mm256\_store\_pd} were used to enhance performance. Sample data was recorded using the modified program \texttt{dgemm\_avx.c} and the shell script \texttt{collect\_data2.sh}. Results for MFLOP rates can be seen in figure \ref{avx_flops}. For n greater than 500, the new code is about 3 times faster than the unblocked version.
+The vector intrinsics \texttt{\_mm256\_load\_pd}, \texttt{\_mm256\_store\_pd} and \texttt{\_mm256\_fmadd\_pd} were used to manually vectorize the code. Performance data was recorded using the modified program \texttt{dgemm\_avx.c} and the shell script \texttt{collect\_data2.sh} and is illustrated in Figure \ref{avx_flops}. For n greater than 500, the new code is about 3 times faster than the unblocked version.
+
+Compile with
+\begin{center}
+\texttt{icc -O3 -ipo dgemm\_avx.c timer.c}
+\end{center}
 
 \begin{figure}[h]
   \begin{center}
-    \includegraphics{../graphics/graph_avx.pdf}	
-    \caption{FLOPS of blocked matrix multiplication}
+    \includegraphics[scale=0.8]{../graphics/graph_avx.pdf}	
+    \caption{Performance measure of the blocked matrix-matrix multiplication with vector-intrinsics.}
     \label{avx_flops}
   \end{center}
 \end{figure}
-
 
 \end{document}
