@@ -52,7 +52,8 @@ Loop for a single substitution with n=3:
         }
     }                  
 \end{lstlisting}
-How to do this for 2000 systems efficiently?
+How to do this for 2000 systems efficiently?\\
+Use SoA instead of AoS:
 \begin{itemize}
 \item Calculate $x[2]$ for all systems
 \item Calculate $x[1]$ for all systems
@@ -86,6 +87,6 @@ for(i = n-1; i >= 0; --i){
 \end{lstlisting}
 
 \begin{itemize}
-\item Improvement by a factor of 2.93
+\item Improvement by a factor of 2.93 (personal laptop with only 128 bit wide vector instructions).
 \end{itemize}
 \end{frame}

@@ -1,9 +1,10 @@
-\section{Conclusion and Outlook}
+\section{Conclusion}
 \begin{frame}{Conclusion and Outlook}
 \begin{itemize}
 \item Intel compiler is highly optimizing. Many idioms are detected and safely vectorized.
 \item No manual loop fiddling. The compiler is very powerful and in the end might find a better solution than the manually optimized loop.
+\item Care about data memory alignment. 16 Byte boundaries for SSE, 32 Byte boundaries for AVX.
 \item Code readability goes first. Then find and optimize the real bottlenecks. \enquote{premature optimization is the root of all evil}.\footnote{Donald Knuth, \textit{Structured Programming with go to Statements}}
-\item Make use of tools: Compiler reports, dynamic profiler (Intel Advisor)
+\item Use the tools: Compiler reports, dynamic profiler (Intel Advisor, Valgrind).
 \end{itemize}
 \end{frame}

@@ -1,4 +1,11 @@
 \section{Exercise 4: Matrix-Matrix-Multiplication I}
+
+\begin{frame}{}
+\begin{center}
+{\Huge Exercise 4: Matrix-Matrix-Multiplication I}
+\end{center}
+\end{frame}
+
 \begin{frame}[fragile]
 \frametitle{Memory access}
 Relevant code:
@@ -28,7 +35,7 @@ Observations:
 	\item Automatic vectorization
 	\item Advanced loop transformation 
 	\end{itemize}
-\item pragma vector aligned
+\item Care about data memory alignment:
 	\begin{itemize}
 	\item use \texttt{memalign()} instead of \texttt{malloc()}
 	\item \texttt{\#pragma vector aligned} before the innermost loop
@@ -47,6 +54,16 @@ Observations:
 \item Best performance for n = 400
 \item Performance is not stable
 \item For n $>$ 500: cache-inefficient
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Explanation}
+\begin{itemize}
+\item Most important hardware component that is responsible for observed performance is the CPU cache.
+\item Haswell EP processor of CooLMUC2 has 64kB L1 cache per core. Half of that for data.
+\item Matrix-matrix multiplication performance best, if both matrices fit into cache.
+\item This makes 16kB for one matrix and 4kB for one row or column of a square matrix.
+\item One double takes 8 Bytes of storage, thus the theoretical maximum matrix size is \texttt{n=512}.
 \end{itemize}
 \end{frame}
 
