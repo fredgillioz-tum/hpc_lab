@@ -20,34 +20,33 @@ Problem:
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Idea: LU factorization}
+\begin{frame}{Idea: LU decomposition}
 \begin{itemize}
 \item Same matrix $A$ for 2000 systems
 \item Decompose $A$ such that $A = LU$
 \item $L$ and $U$ are triangular
-\break
 \item For each system:
 	\begin{enumerate}
 	\item Solve $Ly = b$
 	\item Solve $Ux = y$
 	\end{enumerate}
-\item Only need 2 substitutions per system
+\item Only need to do 2 substitutions per system
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Vectorization}
-Loop for a single substitution:
+Loop for a single substitution with n=3:
 \codestylec
 \begin{lstlisting}
-    for (i = n-1; i >= 0; i--) {
+    for (i = 2; i >= 0; i--) {
         x[i] = b[i];
-        for(j = i+1; j < n; j++) {
+        for(j = i+1; j < 3; j++) {
             x[i] -= a[i][j] * x[j];
         }
     }                  
 \end{lstlisting}
-How to do this 2000 times efficiently?
+How to do this for 2000 systems efficiently?
 \begin{itemize}
 \item Calculate $x[2]$ for all systems
 \item Calculate $x[1]$ for all systems
@@ -56,6 +55,31 @@ How to do this 2000 times efficiently?
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Vectorization 2}
-%TODO: show some code and results
+\begin{frame}[fragile]
+\frametitle{Vectorization: code}
+
+\codestylec
+\begin{lstlisting}
+// for each dimension i
+for(i = n-1; i >= 0; --i){
+    // for each system g
+    // calculate x[i][g]
+    for(g = 0; g < NGLS; ++g) {
+        x[i][g] = b[i][g];
+    }
+
+    for(j = i+1; j < n; ++j) {
+        for(g = 0; g < NGLS; ++g) {
+	        x[i][g] -= a[i][j] * x[j][g];
+        }
+    }
+    for(g = 0; g < NGLS; ++g) {
+        x[i][g] /= a[i][i];
+    }
+}
+\end{lstlisting}
+
+\begin{itemize}
+\item Improvement by a factor of 2.93
+\end{itemize}
 \end{frame}
