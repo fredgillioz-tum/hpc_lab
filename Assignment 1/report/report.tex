@@ -58,7 +58,7 @@
 % ------------------------------------------------------------------------------
 
 \newcommand{\namea}{Frédéric Gillioz (03657002) \texttt{frederic.gillioz@tum.de}}
-\newcommand{\nameb}{Andreas Amler (????) \texttt{???}}
+\newcommand{\nameb}{Andreas Amler (03623882) \texttt{andreas.amler@tum.de}}
 
 \begin{document}
 
@@ -867,7 +867,7 @@ The code was improved in following ways:
 
 \section{Vectorization across equal-shaped problems/sub-tasks}
 \subsubsection*{Sketch of Gaussian Elimination.}
-Figure \ref{graph} illustrates the algorithm as implemented in the source code.
+Figure \ref{graph} illustrates the algorithm as implemented in the source code, but using a custom example matrix $A$ and vector $b$.
 
 \begin{figure}[h]
   \begin{center}
@@ -895,7 +895,15 @@ The only thing that could be done in order to support auto-vectorization is to a
 
 \subsection*{Measure MFLOPS rates and cache-miss-rates for different problems sizes and plot your results. Please use Valgrind for measuring the cache-miss rate.}
 
-Sample data was recorded using the modified program \texttt{dgemm\_variable\_problem\_size.c} and the shell script \texttt{collect\_data1.sh}.
+Sample data was recorded using the modified program \texttt{dgemm\_variable\_problem\_size.c} and the shell script \texttt{collect\_data1.sh}. Results for MFLOP rates can be seen in figure \ref{unblocked}. The cache-miss rate was constant over all tested problem sizes at 8.3 percent.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics{graph_unblocked.pdf}
+    \caption{Performance of non-blocked matrix multiplication}
+    \label{unblocked}
+  \end{center}
+\end{figure}
 
 \subsection*{Do different compiler options (please use the compiler manual for more aggressive options) influence the performance of the implementation.}
 
@@ -905,8 +913,47 @@ Using the preset \texttt{-fast} improves the performance slightly by a factor of
 
 \subsection*{For which problem size do you get the best performance?}
 
+We get the best performance for $n = 400$.
+
 \subsection*{Is the obtained performance stable?}
 
+As can be seen in figure \ref{unblocked}, the performance fluctuates. Furthermore, it decreases noticeably once the problem size $n$ surpasses 400.
+
 \subsection*{Please explain the obtained performance using hardware properties (such as cache size, memory bandwidth, or similar).}
+
+The decline for higher problem sizes can be explained with cache size. %TODO: more detail
+
+\subsection*{Cache-blocking}
+Sample data for matrix-matrix-multiplication with cache blocking was recorded using the modified program \texttt{dgemm\_blocked.c} and the shell script \texttt{collect\_data2.sh}. Results for MFLOP rates can be seen in figure \ref{blocked_flops}. Results for cache-miss rate can be seen in figure \ref{blocked_cache}. %TODO: changes with higher n
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics{graph_unblocked.pdf}	% TODO: replace with real graph
+    \caption{FLOPS of blocked matrix multiplication}
+    \label{blocked_flops}
+  \end{center}
+\end{figure}
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics{graph_unblocked.pdf}	% TODO: replace with real graph
+    \caption{Cache-miss rate of blocked matrix multiplication}
+    \label{blocked_cache}
+  \end{center}
+\end{figure}
+
+\subsection*{Cache-blocking and vector-intrinsics}
+
+%note: cache-miss rate for avx wasn't demanded by the task
+The vector intrinsics \texttt{\_mm256\_load\_pd}, \texttt{\_mm256\_fmadd\_pd} and \texttt{\_mm256\_store\_pd} were used to enhance performance. Sample data was recorded using the modified program \texttt{dgemm\_avx.c} and the shell script \texttt{collect\_data2.sh}. Results for MFLOP rates can be seen in figure \ref{avx_flops}. For n greater than 500, the new code is about 3 times faster than the unblocked version.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics{graph_avx.pdf}	
+    \caption{FLOPS of blocked matrix multiplication}
+    \label{avx_flops}
+  \end{center}
+\end{figure}
+
 
 \end{document}
