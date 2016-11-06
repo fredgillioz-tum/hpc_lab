@@ -81,18 +81,18 @@ int main(int argc, char **argv)
 	double const flops = 2.0 * n * n * n;
 	time_marker_t time = get_time();
 
-	for(ii=0; ii<nn; ii+=blockSize){
-		for(jj=0; jj<nn; jj+=blockSize){
-			for(kk=0; kk<nn; kk+=blockSize){
-				for(i=ii; i<ii+blockSize && i<n; ++i){
-					for(j=jj; j<jj+blockSize && j<n; ++j){
-						s = c[i*n + j];
-						int const kStop = mymin(n-(kk+blockSize), blockSize);
+	for(ii=0; ii<n; ii+=blockSize){
+		for(jj=0; jj<n; jj+=blockSize){
+			for(kk=0; kk<n; kk+=blockSize){
+				for(i=0; i<blockSize && ii+i<n; ++i){
+					for(j=0; j<blockSize && jj+j<n; ++j){
+						int const kStop = mymin(blockSize, n-kk);
+						s = c[(ii + i)*n + jj + j];
 #pragma vector aligned
 						for(k=0; k<kStop; ++k){
-							s += a[i*n + k] * b[k*n + j];
+							s += a[(ii + i)*n + kk + k] * b[(kk + k)*n + jj];
 						}
-						c[i*n + j] = s;
+						c[(ii + i)*n + jj + j] = s;
 					}
 				}
 			}

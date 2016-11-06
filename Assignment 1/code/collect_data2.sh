@@ -1,8 +1,8 @@
 #!/bin/bash
 
-nlist=(250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750)
+nlist=(128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048)
 for n in "${nlist[@]}"; do
-	blist=(4, 8, 12, 16, 32, 64, 128)
+	blist=(8, 16, 32, 64, 256, 512, 768, 1024, 2048)
 	for bs in "${blist[@]}"; do
 		# Measure performance without valgrind overhead.
 		./a.out $n nosilent $bs
