@@ -128,7 +128,7 @@ In some cases, certain keywords or directives may be applied in the code in orde
 \item \texttt{\#pragma ivdep}: Conversely, this ignores any potential data dependencies. Proven dependencies are not ignored. Saves the code overhead for the runtime dependency check and non-vectorized loop version. Potentially unsafe. Equivalent to the \texttt{restrict} keyword below.
 \item \texttt{\#pragma loop count (n)}: Tells the compiler the typical number of loop iterations. Helps it to decide if vectorization would be beneficial.
 \item \texttt{\#pragma vector always}: Vectorize even if the compiler thinks it is not beneficial. Does not ignore proven or potential data dependencies.
-\item \texttt{\#pragma vector align}: Only for SSE instructions: Tells the compiler that the data in the loop is 16-bytes memory aligned. This allows for more efficient aligned data movement instructions to be used. Wrong usage results in SSE runtime exceptions.
+\item \texttt{\#pragma vector aligned}: Only for SSE instructions: Tells the compiler that the data in the loop is 16-bytes memory aligned. This allows for more efficient aligned data movement instructions to be used. Wrong usage results in SSE runtime exceptions.
 \item \texttt{\#pragma vector nontemporal}: Tells the compiler that it should not consider temporal locality for the data. Allows to use more efficient store operations, bypassing the cache. Such a situation occurs for example when adding two vectors.
 \end{itemize}
 \item Keywords:
@@ -880,5 +880,31 @@ Figure \ref{graph} illustrates the algorithm as implemented in the source code.
 \subsubsection*{Solving a linear system of rank 3 cannot be vectorized efficiently. Explain why.}
 The algorithm implemented in gauss.c has several read-after-write conflicts. For instance, when dividing entries in the first row of A by $a_{00}$, $a_{01}$ is overwritten. Upon updating the second row, $a_{01}$ is read. Entries from the second row are again read when updating the third row. For $n$ higher than 3, it is possible that there are enough operations between conflicting ones to allow for optimal vectorization.
 \section{Matrix-Matrix-Multiplication I}
+
+\subsection*{Examine the memory access of the given implementation.}
+
+The accessed memory location of \texttt{c} is constant within the innermost loop. Access to \texttt{a} is with unit-stride, access to \texttt{b} is with stride n.
+
+\subsection*{Use different compiler-directives (Intel compiler) in order to vectorize the given code.}
+
+Compiling with the option \texttt{-O3} enables auto-vectorization and high-level optimizations using advanced loop transformations.
+
+The only thing that could be done in order to support auto-vectorization is to allocate the arrays with \texttt{memalign()} instead of the default \texttt{malloc()} function and provide the compiler with the hint \texttt{\#pragma vector aligned} just before the innermost loop. Otherwise there is no need for additional compiler directives.
+
+\subsection*{Measure MFLOPS rates and cache-miss-rates for different problems sizes and plot your results. Please use Valgrind for measuring the cache-miss rate.}
+
+Sample data was recorded using the modified program \texttt{dgemm\_variable\_problem\_size.c} and the shell script \texttt{collect\_data1.sh}.
+
+\subsection*{Do different compiler options (please use the compiler manual for more aggressive options) influence the performance of the implementation.}
+
+Yes. Without optimizations (\texttt{-O0}) the are roughly ten times less FLOPS (compared to \texttt{-O3}). With basic optimizations (\texttt{-O1}) things improve roughly by a factor of three (compared to \texttt{-O0}) and with vectorization (\texttt{-O2}) by a factor of ten. High-level optimizations (\texttt{-O3}) don't improve things anymore compare to \texttt{-O2}.
+
+Using the preset \texttt{-fast} improves the performance slightly by a factor of roughly 1.5 compared to \texttt{-O3}. It effectively worsens the precision of floating point arithmetic and links runtime dependencies statically.
+
+\subsection*{For which problem size do you get the best performance?}
+
+\subsection*{Is the obtained performance stable?}
+
+\subsection*{Please explain the obtained performance using hardware properties (such as cache size, memory bandwidth, or similar).}
 
 \end{document}

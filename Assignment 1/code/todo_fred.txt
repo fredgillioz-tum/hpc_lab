@@ -9,6 +9,7 @@ Optimization options:
   Dateien bzw. nur in aktueller Datei) für bessere Abschätzung von trip counts, data alignment,
   oder data dependencies.
 * -[no-]qopt-dynamic-align : dynamic data alignment optimizations an/aus
+* -fast : Statisches Linken und ungenaue floating point operationen.
 
 Reporting:
 * -qopt-report=[0..5] : Reporting level. 0=aus, 5=meiste info
