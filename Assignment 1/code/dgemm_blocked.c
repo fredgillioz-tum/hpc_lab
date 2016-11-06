@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 {
 	int n;
 	double *a, *b, *c;
-	__declspec(align(16)) double s;
+	__declspec(align(32)) double s;
 
 	int mem_size;
 
@@ -35,20 +35,28 @@ int main(int argc, char **argv)
 	char logfile_name[100];
 	FILE *logfile_handle;
 
+	int silent = 0;
+	if(argc > 2){
+		silent = (strcmp("silent", argv[2]) == 0);
+	}
+
 	n = 512;
 	if(argc > 1){
 		n = atoi(argv[1]);
 	}
-
-	int silent = 0;
-	if(argc > 2){
-		silent = (strcmp("silent", argv[2]) == 0);
+	if((n % 4) != 0){
+		if(!silent) printf("matrix size must be a multiple of 4");
+		return 0;
 	}
 
     int blockSize = 16;
     if(argc > 3){
         blockSize = atoi(argv[3]);
     }
+	if((blockSize % 4) != 0){
+		if(!silent) printf("blocksize must be a multiple of 4");
+		return 0;
+	}
     int const numBlocks = ((n-1)/blockSize) + 1;
     int const nn = blockSize*numBlocks;
 
@@ -58,9 +66,9 @@ int main(int argc, char **argv)
 	}
 
 	mem_size = n * n * sizeof(double);
-	a = (double*)memalign(16, mem_size);
-	b = (double*)memalign(16, mem_size);
-	c = (double*)memalign(16, mem_size);
+	a = (double*)memalign(32, mem_size);
+	b = (double*)memalign(32, mem_size);
+	c = (double*)memalign(32, mem_size);
 	if(0 == a || 0 == b || 0 == c){
 		if(!silent) printf("memory allocation failed");
 		return 0;
