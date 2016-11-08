@@ -45,8 +45,8 @@ Integers:
 \item Proven dependencies/Loop-carried dependencies:
 \begin{itemize}
 \item Read-after-write (flow dependency): Possibly reading too early. Cannot safely be vectorized.
--\item Write-after-read (anti dependency): Can mostly be safely vectorized (if there is no other use of that memory location in the loop body).
--\item Write-after-write (output dependency): This can generally not be safely vectorized.
+\item Write-after-read (anti dependency): Can mostly be safely vectorized (if there is no other use of that memory location in the loop body).
+\item Write-after-write (output dependency): This can generally not be safely vectorized.
 \end{itemize}
 Exception: Some reduction idioms (e.g. multiply-accumulate) recognized by the compiler are safely vectorized.
 \item Potential dependencies/Pointer aliasing:
